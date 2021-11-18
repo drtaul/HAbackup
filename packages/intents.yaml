@@ -1,0 +1,91 @@
+input_text:
+  sb_player:
+    name: last_sb_player
+intent_script:
+  QueryPws:
+    speech:
+      text: >
+        {% set condreq = wscond %}
+        {% if condreq == "temperature" %}
+          The current temperature is {{ states.sensor.ws_temp.state  }} degrees
+        {% elif condreq == "humidity" %}
+          The current humidity is {{ states.sensor.ws_relative_humidity.state  }} percent
+        {% elif condreq == "rainfall" %}
+          The current rainfall is {{ states.sensor.rain_last_12hr.state|round(2,ceil)  }} inches since 6 oclock
+        {% elif condreq == "wind" %}
+          The current wind speed is {{ states.sensor.ws_wind.state }} miles per hour
+        {% elif condreq == "weather" %}
+          The current temperature is {{ states.sensor.ws_temp.state  }} degrees with a humidity of {{ states.sensor.ws_relative_humidity.state  }} percent. Wind speed is currently {{ states.sensor.ws_wind.state }} miles per hour. The current rainfall is {{ states.sensor.rain_last_12hr.state|round(2,ceil) }} inches since 6 oclock
+        {% else %}
+          Sorry, the current {{ condreq }} condition is not available
+        {% endif %}
+  LMSAction:
+    speech:
+      text: setting player to {{ action }}
+    action:
+      - service: system_log.write
+        data_template:
+          level: error
+          logger: homeassistant.components.mylogger
+          message: "lms-action:player {{ player }} siteid {{ siteId }}"
+      - service: input_text.set_value
+        data_template:
+          entity_id: input_text.sb_player
+          value: >
+            {% if player == 'this' or player == '' %}
+              {% if siteId == 'rsat1' %}
+                rspeaker1
+              {% elif siteId == 'rsat2' %}
+                raspberrypi
+              {% else %}
+                google_home
+              {% endif %}
+            {% else %}
+              {{ player }}
+            {% endif %}
+      - service_template: >
+          {% if action == "pause" %}
+            media_player.media_pause
+          {% else %}
+            media_player.media_play
+          {% endif %}
+        data_template:
+          entity_id: media_player.{{ states.input_text.sb_player.state }}
+  LMSPlayAlbum:
+    speech:
+      text: playing album {{ title }} on player {{ states.input_text.sb_player.state }}
+    action:
+      - service: squeezebox.call_method
+        data_template:
+          entity_id: media_player.{{ states.input_text.sb_player.state }}
+          command: "playlist"
+          parameters: ["loadtracks", "album.titlesearch={{ title }}"]
+  LMSPlayArtist:
+    speech:
+      text: playing artist {{ title }} on player {{ states.input_text.sb_player.state }}
+    action:
+      - service: squeezebox.call_method
+        data_template:
+          entity_id: media_player.{{ states.input_text.sb_player.state }}
+          command: "playlist"
+          parameters: ["loadtracks", "contributor.namesearch={{ title }}"]
+  LMSPlayList:
+    speech:
+      text: playing {{ title }} playlist on player {{ states.input_text.sb_player.state }}
+    action:
+      - service: squeezebox.call_method
+        data_template:
+          entity_id: media_player.{{ states.input_text.sb_player.state }}
+          command: "playlist"
+          parameters: ["resume", "{{ title }}"]
+  LMSVolume:
+    speech:
+      text: setting volume on player {{ states.input_text.sb_player.state }} to {{ volume }}
+    action:
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.{{ states.input_text.sb_player.state }}
+          volume_level: "{{ volume / 100.0 }}"
+  ReportTimeOfDay:
+    speech:
+      text: the time is {{ now().strftime('%I') }} {{ now().minute }} {{ now().strftime('%0') }} on {{ now().strftime('%A') }} {{ now().strftime('%B') }} {{ now().strftime('%d') }}

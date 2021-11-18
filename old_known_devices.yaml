@@ -1,0 +1,629 @@
+
+
+kaysphone:
+  icon:
+  mac:
+  name: kaysphone
+  picture:
+  track: true
+
+shelly1_772440:
+  icon:
+  mac: DC:4F:22:77:24:40
+  name: shelly1-772440
+  picture:
+  track: true
+
+shelly1_771e2c:
+  icon:
+  mac: DC:4F:22:77:1E:2C
+  name: shelly1-771E2C
+  picture:
+  track: true
+
+monitornode:
+  icon:
+  mac: 2C:F4:32:4B:49:96
+  name: monitornode
+  picture:
+  track: true
+
+crawlspace:
+  icon:
+  mac: EC:FA:BC:C1:55:C7
+  name: crawlspace
+  picture:
+  track: true
+
+google_home_mini:
+  icon:
+  mac: B0:2A:43:0F:21:B9
+  name: Google-Home-Mini
+  picture:
+  track: false
+
+google_home:
+  icon:
+  mac: F4:F5:D8:CC:EA:9A
+  name: Google-Home
+  picture:
+  track: false
+
+rpidnsmasq:
+  icon:
+  mac: B8:27:EB:96:17:E4
+  name: rpidnsmasq
+  picture:
+  track: false
+
+hs100:
+  icon:
+  mac: 50:C7:BF:1C:E0:0D
+  name: HS100
+  picture:
+  track: false
+
+office_desk_light_1935:
+  icon:
+  mac: D8:F1:5B:90:87:8F
+  name: office-desk-light-1935
+  picture:
+  track: false
+
+tasmoto_1031:
+  icon:
+  mac: D8:F1:5B:C6:A4:07
+  name: tasmoto-1031
+  picture:
+  track: false
+
+esp_b7ef6d:
+  icon:
+  mac: A4:CF:12:B7:EF:6D
+  name: ESP B7EF6D
+  picture:
+  track: true
+
+40_4e_36_1e_7c_eb:
+  icon:
+  mac: 40:4E:36:1E:7C:EB
+  name: 40 4e 36 1e 7c eb
+  picture:
+  track: false
+
+shelly1_77220f:
+  icon:
+  mac: DC:4F:22:77:22:0F
+  name: shelly1-77220F
+  picture:
+  track: true
+
+shellydimmer_f36b29:
+  icon:
+  mac: CC:50:E3:F3:6B:29
+  name: shellydimmer-F36B29
+  picture:
+  track: true
+
+ce_43_6e_bb_bb_36:
+  icon:
+  mac: CE:43:6E:BB:BB:36
+  name: ce 43 6e bb bb 36
+  picture:
+  track: false
+
+drtphone:
+  icon:
+  mac: c2:98:99:15:87:9e
+  name: drtphone
+  picture:
+  track: true
+
+lgwebostv:
+  icon:
+  mac: 64:CC:22:6D:D5:F4
+  name: LGwebOSTV
+  picture:
+  track: true
+
+ac_5d_5c_22_e1_8f:
+  icon:
+  mac: AC:5D:5C:22:E1:8F
+  name: ac 5d 5c 22 e1 8f
+  picture:
+  track: false
+
+myq_c59:
+  icon:
+  mac: 64:52:99:99:8C:97
+  name: MyQ-C59
+  picture:
+  track: false
+
+dc_71_96_7b_1b_37:
+  icon:
+  mac: DC:71:96:7B:1B:37
+  name: dc 71 96 7b 1b 37
+  picture:
+  track: true
+
+hp9cb654605098:
+  icon:
+  mac: 9C:B6:54:60:50:98
+  name: HP9CB654605098
+  picture:
+  track: true
+
+farmlaptop:
+  icon:
+  mac: 00:C2:C6:12:A6:38
+  name: FarmLaptop
+  picture:
+  track: true
+
+2c_aa_8e_2c_b3_57:
+  icon:
+  mac: 2C:AA:8E:2C:B3:57
+  name: 2c aa 8e 2c b3 57
+  picture:
+  track: true
+
+raspberrypi:
+  icon:
+  mac: DC:A6:32:21:5D:68
+  name: raspberrypi
+  picture:
+  track: true
+
+tablet_7ngsheot:
+  icon:
+  mac: 84:EF:18:2F:26:73
+  name: TABLET-7NGSHEOT
+  picture:
+  track: true
+
+1a_6b_f5_7c_c1_4f:
+  icon:
+  mac: 1A:6B:F5:7C:C1:4F
+  name: 1a 6b f5 7c c1 4f
+  picture:
+  track: true
+
+f2_da_4a_ad_08_59:
+  icon:
+  mac: F2:DA:4A:AD:08:59
+  name: f2 da 4a ad 08 59
+  picture:
+  track: true
+
+iphone_x:
+  icon:
+  mac: 88:19:08:11:5D:BA
+  name: iPhone-X
+  picture:
+  track: true
+
+c8_02_8f_82_d6_61:
+  icon:
+  mac: C8:02:8F:82:D6:61
+  name: c8 02 8f 82 d6 61
+  picture:
+  track: true
+
+kays_ultrabook:
+  icon:
+  mac: 20:16:D8:07:7C:6A
+  name: kays-ultrabook
+  picture:
+  track: true
+
+amazon_d66d16eb9:
+  hide_if_away: false
+  icon:
+  mac: 0C:47:C9:85:4A:04
+  name: amazon-d66d16eb9
+  picture:
+  track: true
+
+tasmota_3467:
+  hide_if_away: false
+  icon:
+  mac: D8:F1:5B:8D:AD:8B
+  name: tasmota-3467
+  picture:
+  track: true
+
+tasmota_7971:
+  hide_if_away: false
+  icon:
+  mac: 2C:F4:32:44:3F:23
+  name: tasmota-7971
+  picture:
+  track: true
+
+e1:
+  hide_if_away: false
+  icon:
+  mac: B0:41:1D:E1:65:FC
+  name: E1
+  picture:
+  track: true
+
+kelseys_ipad:
+  icon:
+  mac: 24:1B:7A:9D:6B:41
+  name: Kelseys-iPad
+  picture:
+  track: true
+
+rpidnsmasq_2:
+  icon:
+  mac: B8:27:EB:67:D3:FF
+  name: rpidnsmasq
+  picture:
+  track: true
+
+34_d2_70_f8_ee_bc:
+  icon:
+  mac: 34:D2:70:F8:EE:BC
+  name: 34_d2_70_f8_ee_bc
+  picture:
+  track: true
+
+4c_17_44_cd_b6_84:
+  icon:
+  mac: 4C:17:44:CD:B6:84
+  name: 4c_17_44_cd_b6_84
+  picture:
+  track: true
+
+esp_c71307:
+  icon:
+  mac: D8:F1:5B:C7:13:07
+  name: ESP_C71307
+  picture:
+  track: true
+
+chromecast:
+  icon:
+  mac: 6C:AD:F8:53:AC:BD
+  name: Chromecast
+  picture:
+  track: true
+
+atticmonitor:
+  icon:
+  mac: 2C:F4:32:3C:B1:FB
+  name: atticmonitor
+  picture:
+  track: true
+
+
+android_754b01c47f408bc2:
+  icon:
+  mac: 00:08:22:32:B8:08
+  name: android-754b01c47f408bc2
+  picture:
+  track: true
+
+atticmonitor_2:
+  icon:
+  mac: 2C:F4:32:3C:F3:2F
+  name: atticmonitor
+  picture:
+  track: true
+
+tasmota_77245e_1118:
+  icon:
+  mac: DC:4F:22:77:24:5E
+  name: tasmota_77245E-1118
+  picture:
+  track: true
+
+thermostat_75_a1_ca:
+  icon:
+  mac: 20:02:AF:75:A1:CA
+  name: thermostat-75-A1-CA
+  picture:
+  track: true
+
+f4_03_2a_ac_12_8b:
+  icon:
+  mac: F4:03:2A:AC:12:8B
+  name: f4_03_2a_ac_12_8b
+  picture:
+  track: true
+
+raspberrypi_2:
+  icon:
+  mac: DC:A6:32:BF:A3:45
+  name: raspberrypi
+  picture:
+  track: true
+
+dc_a6_32_bf_c2_45:
+  icon:
+  mac: DC:A6:32:BF:C2:45
+  name: dc_a6_32_bf_c2_45
+  picture:
+  track: true
+
+6a_60_b7_e1_e5_23:
+  name: 6a_60_b7_e1_e5_23
+  mac: 6A:60:B7:E1:E5:23
+  icon:
+  picture:
+  track: true
+
+weatherstation_2:
+  name: weatherstation
+  mac: 24:0A:C4:E8:19:8C
+  icon:
+  picture:
+  track: true
+
+24_0a_c4_e8_18_d0:
+  name: 24_0a_c4_e8_18_d0
+  mac: 24:0A:C4:E8:18:D0
+  icon:
+  picture:
+  track: true
+
+iphone_x_2:
+  name: iPhone-X
+  mac: EE:35:C0:A3:7F:41
+  icon:
+  picture:
+  track: true
+
+freds_iphone:
+  name: Freds-iPhone
+  mac: 4A:04:4C:CD:4B:C5
+  icon:
+  picture:
+  track: true
+
+rlc_422w:
+  name: RLC-422W
+  mac: B0:41:1D:35:DC:50
+  icon:
+  picture:
+  track: true
+
+shellydimmer2_40f52001a3f0:
+  name: shellydimmer2-40F52001A3F0
+  mac: 40:F5:20:01:A3:F0
+  icon:
+  picture:
+  track: true
+
+shellydimmer2_40f52000d57b:
+  name: shellydimmer2-40F52000D57B
+  mac: 40:F5:20:00:D5:7B
+  icon:
+  picture:
+  track: true
+
+tasmota_1265:
+  name: tasmota-1265
+  mac: DC:4F:22:7A:24:F1
+  icon:
+  picture:
+  track: true
+
+tasmota_1266:
+  name: tasmota-1266
+  mac: DC:4F:22:7A:24:F2
+  icon:
+  picture:
+  track: true
+
+kelseys_ipad_2:
+  name: Kelseys-iPad
+  mac: 56:B6:04:4E:43:8D
+  icon:
+  picture:
+  track: true
+
+tasmota_1808:
+  name: tasmota-1808
+  mac: DC:4F:22:7A:E7:10
+  icon:
+  picture:
+  track: true
+
+shelly1_55f0c9:
+  name: shelly1-55F0C9
+  mac: B4:E6:2D:55:F0:C9
+  icon:
+  picture:
+  track: true
+
+tasmota_1255:
+  name: tasmota-1255
+  mac: DC:4F:22:7A:24:E7
+  icon:
+  picture:
+  track: true
+
+shellyswitch25_40f52000c68b:
+  name: shellyswitch25-40F52000C68B
+  mac: 40:F5:20:00:C6:8B
+  icon:
+  picture:
+  track: true
+
+2a_d0_99_90_49_e7:
+  name: 2a_d0_99_90_49_e7
+  mac: 2A:D0:99:90:49:E7
+  icon:
+  picture:
+  track: true
+
+esp_b7f1a9:
+  name: ESP_B7F1A9
+  mac: A4:CF:12:B7:F1:A9
+  icon:
+  picture:
+  track: true
+
+esp_4e08f3:
+  name: ESP_4E08F3
+  mac: EC:FA:BC:4E:08:F3
+  icon:
+  picture:
+  track: true
+
+tasmota_8bdbeb_7147:
+  name: tasmota_8BDBEB-7147
+  mac: D8:F1:5B:8B:DB:EB
+  icon:
+  picture:
+  track: true
+
+kelseysplewatch:
+  name: KelseyspleWatch
+  mac: D6:40:9E:22:F4:B4
+  icon:
+  picture:
+  track: true
+
+shelly1_500291ed2009:
+  name: shelly1-500291ED2009
+  mac: 50:02:91:ED:20:09
+  icon:
+  picture:
+  track: true
+
+iphone_3:
+  name: iPhone
+  mac: B2:4F:3F:9B:0D:34
+  icon:
+  picture:
+  track: true
+
+38_1a_52_57_18_8f:
+  name: 38_1a_52_57_18_8f
+  mac: 38:1A:52:57:18:8F
+  icon:
+  picture:
+  track: true
+
+android_67d62c91a0b82981:
+  name: android-67d62c91a0b82981
+  mac: F8:A9:D0:50:9D:7B
+  icon:
+  picture:
+  track: true
+
+bigboss:
+  name: bigboss
+  mac: 00:12:FB:26:03:7C
+  icon:
+  picture:
+  track: true
+
+johns_iphone:
+  name: Johns-iPhone
+  mac: D0:25:98:55:51:6A
+  icon:
+  picture:
+  track: true
+
+sheliatksiphone:
+  name: SheliaTksiPhone
+  mac: 58:7F:57:69:07:A0
+  icon:
+  picture:
+  track: true
+
+iphone_x_3:
+  name: iPhone-X
+  mac: A2:F5:9B:02:03:27
+  icon:
+  picture:
+  track: true
+
+laptop_rgtvqffq:
+  name: LAPTOP-RGTVQFFQ
+  mac: 98:3B:8F:F8:8C:B6
+  icon:
+  picture:
+  track: true
+
+sheliatksiphone_2:
+  name: SheliaTksiPhone
+  mac: 76:07:B4:39:27:95
+  icon:
+  picture:
+  track: true
+
+johns_iphone_2:
+  name: Johns-iPhone
+  mac: 42:50:6E:0D:3B:74
+  icon:
+  picture:
+  track: true
+
+weatherstation:
+  name: weatherstation
+  mac:
+  icon:
+  picture:
+  track: true
+
+iphone:
+  name: iPhone
+  mac: F6:FA:3B:28:33:F7
+  icon:
+  picture:
+  track: true
+
+48_43_dd_80_3d_20:
+  name: 48_43_dd_80_3d_20
+  mac: 48:43:DD:80:3D:20
+  icon:
+  picture:
+  track: true
+
+84_cc_a8_97_20_20:
+  name: 84_cc_a8_97_20_20
+  mac: 84:CC:A8:97:20:20
+  icon:
+  picture:
+  track: true
+
+thermostat:
+  name: THERMOSTAT
+  mac: 0C:AE:7D:C5:A3:5F
+  icon:
+  picture:
+  track: true
+
+bonus_room_thermostat:
+  name: bonus_room_thermostat
+  mac:
+  icon:
+  picture:
+  track: true
+
+living_room_thermostat:
+  name: living_room_thermostat
+  mac:
+  icon:
+  picture:
+  track: true
+
+b4_e4_54_5f_37_23:
+  name: b4_e4_54_5f_37_23
+  mac: B4:E4:54:5F:37:23
+  icon:
+  picture:
+  track: true
+
+Dennispixel4:
+  name: dennispixel4
+  mac: F0:5C:77:C9:0E:46
+  icon: mdi:cellphone
+  picture:
+  track: true

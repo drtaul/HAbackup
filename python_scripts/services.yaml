@@ -1,0 +1,11 @@
+tts_announce_local:
+  name: TTS Announce Local
+  description: Voice Announcement Notification over local smart speakers.
+  fields:
+    speaker:
+      description: list of local speaker friendly names
+      example: office_echo, living_room_echo
+    message:
+      description: text message to be announced
+    volume:
+      description: float value between 0-1

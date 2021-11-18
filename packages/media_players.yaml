@@ -1,0 +1,23 @@
+webostv:
+    host: 192.168.1.24
+    name: living_room_tv
+    turn_on_action:
+      service: wake_on_lan.send_magic_packet
+      data:
+        mac: "20:17:42:87:45:e6"
+    
+#media_player:
+#  - platform: braviatv
+#    host: 192.168.1.42
+#    name: "Bonus Room TV"
+
+# chromecast players are now auto-discovered
+# or replace host with uuid, how do I determine uuid
+#cast:
+
+#  media_player:
+#    - host: 192.168.1.10
+#    - host: 192.168.1.9
+
+media_extractor:
+

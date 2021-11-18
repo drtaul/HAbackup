@@ -1,0 +1,112 @@
+# turn this off until we get another robot vacuum
+#deebot:
+#    username: dennis.taul@gmail.com
+#    password: 855karen
+#    country: us
+#    continent: na
+#    deviceid: E0000760319602690280
+#    live_map: True
+#    show_color_rooms: False
+##    livemappath: ‘www/live_map.png’
+
+#camera:
+#  - platform: generic
+#    name: Deebot_live_map
+#    still_image_url: "http://192.168.1.184:8123/local/DEEBOT-950_liveMap.png" 
+#    verify_ssl: false
+   
+input_boolean:
+    deebot_kitchen:
+      name: vacuum kitchen
+    deebot_master_bedrm:
+      name: vacuum master bedroom
+    deebot_laundry:
+      name: vacuum laundry
+    deebot_living_room:
+      name: vacuum living room
+    deebot_dining_room:
+      name: vacuum dining room
+    deebot_guest_bedrm:
+      name: vacuum guest bedroom
+    deebot_ms_bathrm:
+      name: vacuum ms bathroom
+    deebot_hallway:
+      name: vacuum hallway
+    deebot_guest_bathrm:
+      name: vacuum guest bath
+    deebot_msbr_closet:
+      name: vacuum msbr closet
+
+script:
+  vacuum_area:
+    alias: vacuum area
+    sequence:
+      - condition: state
+        entity_id: vacuum.deebot_950
+        state: 'docked'
+      - service: vacuum.send_command
+        data_template:
+          command: spot_area 
+          entity_id: vacuum.deebot_950
+          params:
+            rooms: >-
+              {%- set x = "" %}
+              {% if is_state('input_boolean.deebot_kitchen', 'on') %}
+                {% set x = x + "10," %}
+              {% endif %}
+              {% if is_state('input_boolean.deebot_master_bedrm', 'on') %}
+                {% set x = x + "6," %}
+              {% endif %}
+              {% if is_state('input_boolean.deebot_guest_bedrm', 'on') %}
+                {% set x = x + "2," %}
+              {% endif %}
+              {% if is_state('input_boolean.deebot_laundry', 'on') %}
+                {% set x = x + "4," %}
+              {% endif %}
+              {% if is_state('input_boolean.deebot_living_room', 'on') %}
+                {% set x = x + "11," %}
+              {% endif %}
+              {% if is_state('input_boolean.deebot_dining_room', 'on') %}
+                {% set x = x + "0," %}
+              {% endif %}
+              {% if is_state('input_boolean.deebot_ms_bathrm', 'on') %}
+                {% set x = x + "7," %}
+              {% endif %}
+              {% if is_state('input_boolean.deebot_hallway', 'on') %}
+                {% set x = x + "12," %}
+              {% endif %}
+              {% if is_state('input_boolean.deebot_guest_bathrm', 'on') %}
+                {% set x = x + "12," %}
+              {% endif %}
+              {% if is_state('input_boolean.deebot_msbr_closet', 'on') %}
+                {% set x = x + "8," %}
+              {% endif %}
+              {{x[:-1]}}
+            cleanings: 1
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.deebot_kitchen
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.deebot_master_bedrm
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.deebot_guest_bedrm
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.deebot_laundry
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.deebot_living_room
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.deebot_dining_room
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.deebot_ms_bathrm
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.deebot_hallway
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.deebot_guest_bathrm

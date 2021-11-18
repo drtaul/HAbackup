@@ -1,0 +1,146 @@
+input_number:
+    total_rainfall:
+        name: "Total Rainfall"
+        min: 0.0
+        max: 999999999.0
+        unit_of_measurement: "in"
+    rain_12h_base:
+        name: "rain 12h base"
+        max: 100.0
+        min: 0.0
+        unit_of_measurement: "in"
+    rain_mx_rate_12h:
+        name: "rain 12h mx"
+        min: 0.0
+        max: 999
+        unit_of_measurement: "in/min"
+    last_reported_rainfall:
+        name: "Last Reported Rainfall"
+        max: 100.0
+        min: 0.0
+        unit_of_measurement: "in"
+        
+        
+sensor:
+  - platform: template
+    sensors:
+      rain_last_12hr:
+        # entity_id: input_number.total_rainfall, input_number.rain_12h_base
+        value_template: >
+          {% if not (is_state('input_number.total_rainfall','unknown')) %}
+            {{ (states('input_number.total_rainfall')|float) - (states('input_number.rain_12h_base')|float)|round(2) }}
+          {% else %}
+            {{ 0.0|float }}
+          {% endif %}
+        unit_of_measurement: 'in'
+      wind_direction:
+        icon_template: mdi:compass
+        value_template: >-
+          {% set direction = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW','N'] %}
+          {% set degree = states('sensor.ws_windDir')|float(0.0) %}
+          {{ direction[((degree+11.25)/22.5)|int] }}
+
+
+automation:
+  - alias: "Sum Total Rainfall"
+    trigger:
+      - platform: state
+        entity_id: sensor.ws_rain
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.total_rainfall
+          value: >
+            {% if is_state('input_number.total_rainfall', 'unknown') %}
+              {{ states('sensor.ws_rain')|float|round(2) }}
+            {% else %}
+              {{ (states('input_number.total_rainfall')|float + states('sensor.ws_rain')|float)|round(2) }}
+            {% endif %}
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.rain_mx_rate_12h
+          value: >
+            {% if is_state('input_number.rain_mx_rate_12h', 'unknown') %}
+              {{ states('sensor.ws_rain')|float }}
+            {% else %}
+              {% set mylist = states('sensor.ws_rain')|float,states('input_number.rain_mx_rate_12h')|float %}
+              {{ mylist|max|float|round(2) }}
+            {% endif %}
+      - service: mqtt.publish
+        data_template:
+            topic: 'pws/rain'
+            payload: "{{ states('sensor.ws_rain')|float }}"
+  - alias: "Reset 12h Rainfall"
+    trigger:
+      - platform: time_pattern
+        hours: '6'
+        minutes: '0'
+        seconds: '0'
+    action:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.rain_12h_base
+          value: "{{ states('input_number.total_rainfall')|float }}"
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.rain_mx_rate_12h
+          value: "{{ 0.0|float }}"
+  - alias: "Publish BME280 Data"
+    trigger: 
+        platform: state
+        entity_id:
+          - sensor.ws_temp
+          - sensor.ws_relative_humity
+          - sensor.ws_pres
+    action:
+      - service: mqtt.publish
+        data_template:
+            topic: 'pws/outTemp'
+            payload: "{{ states('sensor.ws_temp')|float }}"
+      - service: mqtt.publish
+        data_template:
+            topic: 'pws/outHumidity'
+            payload: "{{ states('sensor.ws_relative_humidity')|float }}"
+      - service: mqtt.publish
+        data_template:
+            topic: 'pws/barometer'
+            payload: "{{ states('sensor.ws_pres')|float(29) }}"
+  - alias: "Publish Wind Data"
+    trigger: 
+        platform: state
+        entity_id: sensor.ws_wind
+    action:
+      - service: mqtt.publish
+        data_template:
+            topic: 'pws/windSpeed'
+            payload: "{{ states('sensor.ws_wind')|float }}"
+  - alias: "Publish Battery Status"
+    trigger: 
+        platform: state
+        entity_id: sensor.battery_level_3
+    action:
+      - service: mqtt.publish
+        data_template:
+            topic: 'pws/txBatteryStatus'
+            payload: "{{ states('sensor.battery_level_3')|float }}"
+  - alias: "Publish UV Index"
+    trigger: 
+        platform: state
+        entity_id: sensor.uvindex
+    action:
+      - service: mqtt.publish
+        data_template:
+            topic: 'pws/UV'
+            payload: "{{ states('sensor.UVIndex')|float }}"
+  - alias: "Publish Wind Direction"
+    trigger:
+      platform: state
+      entity_id: sensor.ws_winddir
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: 'pws/windDir'
+          payload: "{{ states('sensor.ws_windDir')|int }}"
+
+
+        

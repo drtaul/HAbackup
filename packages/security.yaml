@@ -1,0 +1,214 @@
+input_boolean:
+  guest_mode:
+    name: guest mode
+  security_mode:
+    name: security mode
+    icon: mdi:security
+
+input_text:
+  exdooropen_list:
+    name: Entrance Open Doors
+    max: 255
+    
+automation:
+  - alias: squelch security voice announcements
+    trigger:
+      - platform: state
+        entity_id: input_boolean.person_outside
+        to: 'on'
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          after: '6:30:00'
+          before: '22:30:00'
+        - condition: state
+          entity_id: input_boolean.person_inside
+          state: 'on'
+        - condition: state
+          entity_id: input_boolean.home_occupied
+          state: 'on'
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.security_camera_voice_alert
+  - alias: enable security voice announcements
+    trigger:
+      - platform: state
+        entity_id: input_boolean.person_outside
+        to: 'off'
+        for:
+          seconds: 30
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          after: '6:30:00'
+          before: '22:30:00'
+        - condition: state
+          entity_id: input_boolean.person_inside
+          state: 'on'
+        - condition: state
+          entity_id: input_boolean.home_occupied
+          state: 'on'
+    action:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.security_camera_voice_alert
+  - alias: handle entrance door intrusion
+    trigger:
+      - platform: state
+        entity_id: group.entrance_doors
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.security_mode
+        state: 'on'
+    action:
+      - service: script.text_notify
+        data_template:
+          title: "Home Assistant Alarm"
+          message: >-
+            {% set exdoors = states | selectattr('entity_id', 'in', state_attr('group.entrance_doors','entity_id'))| selectattr('state','eq','open')| map(attribute='name') | list %}
+            {%- for entity_id in exdoors -%}
+              {% if loop.first %} Detected opening of the {% elif loop.last %} and the {% endif %}
+               {{ entity_id }}
+            {%- endfor -%}.
+            
+          who: "dennis"
+
+  - alias: enable nobody home security
+    trigger:
+      - platform: state
+        entity_id: input_boolean.home_occupied
+        to: 'off'
+    condition:
+      - condition: state
+        entity_id: input_boolean.guest_mode
+        state: 'off'
+    action:
+      - service: script.set_security_nobody_home
+                
+  - alias: disable nobody home security
+    trigger:
+      - platform: state
+        entity_id: input_boolean.home_occupied
+        to: 'on'
+        id: 'arrive_home'
+    action:
+      - choose:
+          - conditions:
+              - condition: trigger
+                id: 'arrive_home'
+            sequence:
+              - service: input_boolean.turn_off
+                target: 
+                  entity_id: input_boolean.security_mode
+        default: []
+
+  - alias: handle security mode off
+    trigger:
+      - platform: state
+        entity_id: input_boolean.security_mode
+        to: 'off'
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.security_camera_notify
+      - service: script.text_notify
+        data:
+          title: "Home Assistant State Change"
+          message: "Security mode with text alerts now disabled"
+          who: "dennis"
+  - alias: handle security voice alerts off
+    trigger:
+      - platform: state
+        entity_id: input_boolean.security_camera_voice_alert
+        to: 'off'
+    condition:
+      - condition: state
+        entity_id: input_boolean.security_camera_notify
+        state: 'off'
+    action:
+      - service: switch.turn_off
+        target:
+          entity_id: group.security_camera_recordings
+          
+  - alias: handle security voice alerts on
+    trigger:
+      - platform: state
+        entity_id: input_boolean.security_camera_voice_alert
+        to: 'on'
+    action:
+      - service: switch.turn_on
+        target:
+          entity_id: group.security_camera_recordings
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.exdoor_closed_since
+      
+script:
+  set_security_nobody_home:
+    sequence:
+      - variables:
+          sendto: "dennis"
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.security_mode
+      - service: scene.turn_on
+        target:
+          entity_id: scene.nobody_home_security
+      - service: switch.turn_on
+        target:
+          entity_id: group.security_camera_recordings
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: group.outdoor_covers
+                state: 'open'
+            sequence:
+              - service: script.close_covers
+              
+      - service: script.text_notify
+        data:
+          title: "Home Assistant State Change"
+          message: "Security system enabled with text alerts"
+          who: "{{sendto}}"
+      - service: script.check_entrance_doors
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: '{{ input_text.exdooropen_list.state != "" }}'
+            sequence:
+              - service: script.text_notify
+                data: 
+                  message: "Detected doors left open: {{states('input_text.exdooropen_list')}}"
+                  who: "{{sendto}}"
+        default:
+          - service: script.text_notify
+            data: 
+              message: "Verified all entry/exit doors are closed"
+              who: "{{sendto}}"
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.exdooropen_list
+          value: ""
+  check_entrance_doors:
+    sequence:
+      - variables:
+          doors:
+            - binary_sensor.front_door
+            - binary_sensor.crawlspace_door
+            - binary_sensor.garage_kitchen_door
+            - binary_sensor.back_door
+            - binary_sensor.front_door
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.exdooropen_list
+          value_template: >-
+            {% set ns = namespace(doors = []) %}
+            {% for t in expand(doors) | selectattr('state', 'eq', 'on') | list  %}
+              {% set ns.doors = ns.doors + ['{}'.format(t.name)] %}
+            {% endfor %}
+            {{ ns.doors | join(',')}}
+      

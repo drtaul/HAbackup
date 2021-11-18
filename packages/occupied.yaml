@@ -1,0 +1,115 @@
+input_boolean:
+  # managed by person component in home assistant
+  # reference automation.yaml 
+  dennishome:
+    name: Dennis Home
+    icon: mdi:human-male
+  kayhome:
+    name: Kay Home
+    icon: mdi:human-female
+  home_occupied:
+    name: Home Occupied
+    icon: mdi:human-male-female
+  individual_departed:
+    name: home occupant arriving or leaving
+
+sensor:
+  - platform: template
+    sensors:
+      people_home_count:
+        friendly_name: "How many people are at home?"
+        value_template: >-
+          {{ states.person | selectattr('state', 'eq', 'home') | list | count | int }}
+
+automation:
+  - alias: handle occupant arrival or departure
+    trigger:
+      - platform: state
+        entity_id: sensor.people_home_count
+    action:
+      - choose:
+          - conditions:
+              - condition: numeric_state
+                entity_id: sensor.people_home_count
+                below: 1
+            sequence:
+              - service: input_boolean.turn_off
+                target:
+                  entity_id: input_boolean.home_occupied
+          - conditions:
+              - condition: numeric_state
+                entity_id: sensor.people_home_count
+                above: 0
+                below: 2
+            sequence:
+              - service: input_boolean.turn_on
+                target:
+                  entity_id: input_boolean.home_occupied
+          - conditions:
+              - condition: template
+                value_template: "{{ states('trigger.to_state')|int > states('trigger.from_state')|int }}"
+            sequence:
+              - service: input_boolean.turn_off
+                target:
+                  entity_id: input_boolean.individual_departed
+          - conditions:
+              - condition: template
+                value_template: "{{ states('trigger.to_state')|int < states('trigger.from_state')|int }}"
+            sequence:
+              - service: input_boolean.turn_on
+                target:
+                  entity_id: input_boolean.individual_departed
+        default: []
+  - alias: handle kay arrival or departure
+    trigger:
+      platform: state
+      entity_id: person.kay
+    action:
+      - service: >-
+          {% if is_state('person.kay', 'home') %}
+            input_boolean.turn_on
+          {% else %}
+            input_boolean.turn_off
+          {% endif %}
+        target:
+          entity_id: input_boolean.kayhome
+
+  - alias: notify kay arrival
+    trigger:
+      platform: state
+      entity_id: input_boolean.kayhome
+      from: 'off'
+      to: 'on'
+    action:
+      - service: script.text_notify
+        data_template:
+          message: Kay is arriving home
+          who: "dennis"
+  - alias: notify kay departure
+    trigger:
+      platform: state
+      entity_id: input_boolean.kayhome
+      from: 'on'
+      to: 'off'
+    action:
+      - service: script.text_notify
+        data_template:
+          message: Kay has left home
+          who: "dennis"
+      
+  - alias: handle dennis arrival or departure
+    trigger:
+      platform: state
+      entity_id: person.dennis_taul
+    action:
+      service: >-
+        {% if is_state('person.dennis_taul', 'home') %}
+        input_boolean.turn_on
+        {% else %}
+        input_boolean.turn_off
+        {% endif %}
+      target:
+        entity_id: input_boolean.dennishome
+        
+        
+      

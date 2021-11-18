@@ -1,0 +1,154 @@
+climate:
+  - platform: radiotherm
+    host:
+      - 192.168.1.138
+    hold_temp: True
+  - platform: venstar
+    host: 192.168.1.235
+
+input_number:
+  cool_home_target_temperature:
+    name: "At-home CoolTemp"
+    min: 60.0
+    max: 85.0
+    unit_of_measurement: "°F"
+  heat_home_target_temperature:
+    name: "At-home HeatTemp"
+    min: 50.0
+    max: 75.0
+    unit_of_measurement: "°F"
+  cool_away_target_temperature:
+    name: "Away CoolTemp"
+    min: 78.0
+    max: 85.0
+    unit_of_measurement: "°F"
+  heat_away_target_temperature:
+    name: "Away HeatTemp"
+    min: 50.0
+    max: 75.0
+    unit_of_measurement: "°F"
+
+automation:
+  - alias: "Bonus Rm Thermostat to away"
+    trigger:
+      platform: state
+      entity_id: input_boolean.person_upstairs
+      from: 'on'
+      to: 'off'
+    action:
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.thermostat_75_a1_ca
+          temperature: >
+            {% if is_state('input_boolean.climate_heat_mode', 'on') %}
+              {% set mode = 'heat' %}
+            {% else %}
+              {% set mode = 'cool' %}
+            {%- endif %}
+            {{ states('input_number.' + mode + '_away_target_temperature')|float }}
+      - service: climate.set_hvac_mode
+        data_template:
+          entity_id: climate.thermostat_75_a1_ca
+          hvac_mode: >
+            {% if is_state('input_boolean.climate_heat_mode', 'on') %}
+              heat
+            {% else %}
+              cool
+            {% endif %}
+  - alias: "Bonus Rm Thermostat to home"
+    trigger:
+      platform: state
+      entity_id: input_boolean.person_upstairs
+      from: 'off'
+      to: 'on'
+    action:
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.thermostat_75_a1_ca
+          temperature: >
+            {% if is_state('input_boolean.climate_heat_mode', 'on') %}
+              {% set mode = 'heat' %}
+            {% else %}
+              {% set mode = 'cool' %}
+            {%- endif %}
+            {{ states('input_number.' + mode + '_home_target_temperature')|float }}
+      - service: climate.set_hvac_mode
+        data_template:
+          entity_id: climate.thermostat_75_a1_ca
+          hvac_mode: >
+            {% if is_state('input_boolean.climate_heat_mode', 'on') %}
+              heat
+            {% else %}
+              cool
+            {% endif %}
+  - alias: "Set Bonus Rm Fan Speed when door opens"
+    trigger:
+      platform: state
+      entity_id: binary_sensor.wyzesense_77874398
+      from: 'off'
+      to: 'on'
+    action:
+        - service: input_select.select_option
+          data_template:
+            entity_id: input_select.bonus_rm_fan
+            option: >
+              {% set ctemp = state_attr('climate.thermostat_75_a1_ca', 'current_temperature')|float %}
+              {% if ctemp >= 78.0 %}
+                high
+              {% elif ctemp >= 75.0 %}
+                medium
+              {% else %}
+                'off'
+              {% endif %}
+  - alias: "Living Room Thermostat to away"
+    trigger:
+      platform: state
+      entity_id: input_boolean.home_occupied
+      from: 'on'
+      to: 'off'
+    action:
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.living_room
+          temperature: >
+            {% if is_state('input_boolean.climate_heat_mode', 'on') %}
+              {% set mode = 'heat' %}
+            {% else %}
+              {% set mode = 'cool' %}
+            {%- endif %}
+            {{ states('input_number.' + mode + '_away_target_temperature')|float }}
+      - service: climate.set_hvac_mode
+        data_template:
+          entity_id: climate.living_room
+          hvac_mode: >
+            {% if is_state('input_boolean.climate_heat_mode', 'on') %}
+              heat
+            {% else %}
+              cool
+            {% endif %}
+  - alias: "Living Room Thermostat to home"
+    trigger:
+      platform: state
+      entity_id: input_boolean.home_occupied
+      from: 'off'
+      to: 'on'
+    action:
+      - service: climate.set_temperature
+        data_template:
+          entity_id: climate.living_room
+          temperature: >
+            {% if is_state('input_boolean.climate_heat_mode', 'on') %}
+              {% set mode = 'heat' %}
+            {% else %}
+              {% set mode = 'cool' %}
+            {%- endif %}
+            {{ states('input_number.' + mode + '_home_target_temperature')|float }}
+      - service: climate.set_hvac_mode
+        data_template:
+          entity_id: climate.living_room
+          hvac_mode: >
+            {% if is_state('input_boolean.climate_heat_mode', 'on') %}
+              heat
+            {% else %}
+              cool
+            {% endif %}

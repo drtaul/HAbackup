@@ -1,0 +1,98 @@
+
+automation:
+  - alias: "master bedroom button"
+    description: ''
+    mode: restart
+    trigger:
+       - platform: event
+         event_type: zha_event
+    condition:
+       - condition: template
+    # Change this to your own device_ieee (lookup on the device page)
+         value_template: '{{ trigger.event.data.device_ieee == "5c:02:72:ff:fe:49:f9:f0" }}'
+    action:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.command == "off" }}'
+          sequence:
+            - service: switch.turn_off
+              target:
+                entity_id: switch.lk_zbt_onoffplug_d0001_e6bbd3fe_on_off
+            - service: switch.turn_off
+              target:
+                entity_id: switch.sonoff_1000a39d06
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.command == "on" }}'
+          sequence:
+            - service: switch.turn_on
+              target:
+                entity_id: switch.lk_zbt_onoffplug_d0001_e6bbd3fe_on_off
+            - service: switch.turn_on
+              target:
+                entity_id: switch.sonoff_1000a39d06
+  - alias: "bonus room button"
+    description: ''
+    mode: restart
+    trigger:
+       - platform: event
+         event_type: zha_event
+    condition:
+       - condition: template
+    # Change this to your own device_ieee (lookup on the device page)
+         value_template: '{{ trigger.event.data.device_ieee == "5c:02:72:ff:fe:3f:96:91" }}'
+    action:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.command == "off" }}'
+          sequence:
+            - service: switch.toggle
+              target:
+                entity_id: switch.lk_zbt_onoffplug_d0001_28bbd3fe_on_off
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.command == "on" }}'
+          sequence:
+            - service: switch.toggle
+              target:
+                entity_id: switch.lk_zbt_onoffplug_d0001_28bbd3fe_on_off
+  - alias: "Start living room playlist"
+    description: ''
+    mode: restart
+    trigger:
+       - platform: event
+         event_type: zha_event
+    condition:
+       - condition: template
+    # Change this to your own device_ieee (lookup on the device page)
+         value_template: '{{ trigger.event.data.device_ieee == "5c:02:72:ff:fe:ac:44:c9" }}'
+    action:
+      - choose:
+    # Short-Press on the power button.
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.command == "toggle" }}'
+          sequence:
+            - service: media_player.media_play_pause
+              target:
+                entity_id: media_player.google_home
+    # Short-Press on the dim-up button.
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.command == "step" }}'
+          sequence:
+            - service: media_player.volume_up
+              target:
+                entity_id: media_player.google_home
+    # Short-Press on the dim-down button.
+        - conditions:
+          - condition: template
+            value_template: '{{ trigger.event.data.command == "step_with_on_off" }}'
+          sequence:
+            - service: media_player.volume_down
+              target:
+                entity_id: media_player.google_home
+        default: []
+

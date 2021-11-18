@@ -1,0 +1,97 @@
+
+light:
+  - platform: mqtt
+    name: "Pavilion Ceiling Lights"
+    schema: template
+    state_topic: "shellies/pavceilshellydim2/light/0/status"
+    state_template: '{% if value_json.ison %} on {% else %} off {% endif %}'
+    command_topic: "shellies/pavceilshellydim2/light/0/set"
+    command_on_template: '{"turn": "on"{% if brightness is defined %}, "brightness": {{(brightness | float * 0.3882 + 1) | round(0)}}{% endif %}}'
+    command_off_template: '{"turn": "off"}'
+    brightness_template: '{{ (value_json.brightness | float * 2.55) | round(0) }}'
+  - platform: mqtt
+    name: "Pavilion Soffit Lights"
+    schema: template
+    state_topic: "shellies/pavsoffitshellydim2/light/0/status"
+    state_template: '{% if value_json.ison %} on {% else %} off {% endif %}'
+    command_topic: "shellies/pavsoffitshellydim2/light/0/set"
+    command_on_template: '{"turn": "on"{% if brightness is defined %}, "brightness": {{(brightness | float * 0.3882 + 1) | round(0)}}{% endif %}}'
+    command_off_template: '{"turn": "off"}'
+    brightness_template: '{{ (value_json.brightness | float * 2.55) | round(0) }}'
+
+switch:
+  - platform: mqtt
+    name: "Pavilion Floodlight"
+    state_topic: "stat/shelly-pav-floodlight/RESULT"
+    value_template: "{{ value_json.POWER }}"
+    command_topic: "cmnd/shelly-pav-floodlight/POWER"
+    availability_topic: "tele/shelly-pav-floodlight/LWT"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+    icon: mdi:lamp
+  - platform: mqtt
+    name: "Pavilion Fan #1"
+    state_topic: "shellies/pavfans-shelly2/relay/0"
+    command_topic: "shellies/pavfans-shelly2/relay/0/command"
+    payload_on: "on"
+    payload_off: "off"
+    qos: 1
+    retain: true
+    icon: mdi:fan
+  - platform: mqtt
+    name: "Pavilion Fan #2"
+    state_topic: "shellies/pavfans-shelly2/relay/1"
+    command_topic: "shellies/pavfans-shelly2/relay/1/command"
+    payload_on: "on"
+    payload_off: "off"
+    qos: 1
+    retain: true
+    icon: mdi:fan
+
+automation:
+  - alias: "Control Pavilion Ceiling Lights"
+    trigger:
+    - platform: mqtt
+      topic: stat/pavceil-lights/+
+    action:
+      - choose:
+        - conditions:
+              - condition: template
+                value_template: "{{ trigger.payload_json['POWER'] == 'OFF' }}"
+          sequence:
+            - service: light.turn_off
+              data:
+                entity_id: light.pavilion_ceiling_lights
+        - conditions:
+              - condition: template
+                value_template: "{{ trigger.payload_json['POWER'] == 'ON' }}"
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.pavilion_ceiling_lights
+                brightness_pct: "{{ trigger.payload_json['Dimmer'] }}"
+  - alias: "Control Pavilion Soffit Lights"
+    trigger:
+    - platform: mqtt
+      topic: stat/pavsoffit-lights/+
+    action:
+      - choose:
+        - conditions:
+              - condition: template
+                value_template: "{{ trigger.payload_json['POWER'] == 'OFF' }}"
+          sequence:
+            - service: light.turn_off
+              data:
+                entity_id: light.pavilion_soffit_lights
+        - conditions:
+              - condition: template
+                value_template: "{{ trigger.payload_json['POWER'] == 'ON' }}"
+          sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.pavilion_soffit_lights
+                brightness_pct: "{{ trigger.payload_json['Dimmer'] }}"

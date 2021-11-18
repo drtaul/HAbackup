@@ -1,0 +1,128 @@
+# default_config integration enables a long list of integrations
+# instead the following are a subset, just want to be specific and aware
+# of what integrations are enabled.
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.30.33.0/24
+    - 192.168.1.0/24
+    - 127.0.0.1
+#    - ::1
+#    - 172.30.33.7
+#    - 172.30.33.6
+    
+hassio:
+
+my:
+
+config:
+
+api:
+
+intent:
+
+python_script:
+
+alexa:
+  smart_home:
+    locale: en-US
+    filter:
+      include_domains:
+        - cover
+        - fan
+        - climate
+        - scene
+        - group
+    
+sensor:
+  - platform: uptime
+    name: "HA uptime"
+
+history:
+
+logbook:
+  exclude:
+    entities:
+      - automation.publish_bme280_data
+      - automation.publish_uv_index
+      - automation.publish_wind_data
+      - automation.publish_battery_status
+      - automation.sum_total_rainfall
+      - automation.publish_wind_direction
+  include:
+    entities:
+      - input_boolean.dark_outside
+      - sensor.driveway_motion
+      - sensor.sidewalk_motion
+    entity_globs:
+      - sensor.cyberpower_1500_*
+    domains:
+      - light
+      - switch
+      - binary_sensor
+      - fan
+      - automation
+      - input_boolean
+      - input_number
+      - cover
+      - lock
+      - homeassistant
+      - script
+
+media_source:
+
+mobile_app:
+
+map:
+
+conversation:
+
+sun:
+
+system_health:
+
+#http:
+#  base_url: justinkerin.duckdns.org
+
+wake_on_lan: # enables `wake_on_lan` domain
+
+recorder:
+  purge_keep_days: 5
+#  db_url: mysql://homeassistant:855karen@192.168.1.7/homeassistant?charset=utf8
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # Deprecated used components
+  # include_used_components: true
+
+logger:
+  default: warn
+  logs:
+    homeassistant.components.hangups: debug
+    homeassistant.components.mylogger: debug
+    homeassistant.components.plex: debug
+    plexapi: debug
+    #custom_components.alexa_media: debug
+    #alexapy: debug
+    #homeassistant.components.automation: debug
+    #custom_components.wyzesense: debug
+    #wyzesense.gateway: debug
+
+#    homeassistant.components.deebot: debug
+#    deebotozmo: debug
+
+#    homeassistant.components.myq: debug
+#    pychromecast: debug
+#    homeassistant.components.media_player.google_cast: debug
+#    async_upnp_client.profiles.dlna: debug
+#    async_upnp_client.traffic: debug
+
+#emulated_hue:
+#  host_ip: !secret hassio_ip_address
+#  listen_port: 80

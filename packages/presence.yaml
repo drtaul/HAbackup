@@ -1,0 +1,312 @@
+
+#unifi:
+#  controllers:
+#    - host: hassio_ip_address
+#      site: "Taul Home Network"
+#      ssid_filter:
+#        - 'charlottesweb'
+#        - 'charlottesweb_iot'
+
+# no longer needed on installing ubiquiti unifi integration
+#device_tracker:
+#   - platform: unifi_direct
+#     host: !secret unifi_ap_addr
+#     username: !secret unifi_userid
+#     password: !secret unifi_pw
+#     interval_seconds: 15
+#     consider_home: 30
+
+#device_tracker:
+#   - platform: ping
+#     hosts:
+#       kaysphone: 192.168.1.12
+#       dennispixel4: 192.168.1.11
+#       weatherstation: 192.168.1.115
+#       bonus_room_thermostat: 192.168.1.138
+#       living_room_thermostat: 192.168.1.235
+       
+
+#person:
+#   - name: Kay
+#     id: kay
+#     device_trackers:
+#        - device_tracker.pixel_3_xl
+#   - name: dennis_taul
+#     id: 20005b670106477093cadc7e55086fb9
+#     device_trackers:
+#        - device_tracker.pixel_4_xl
+#   - name: keenan
+#     id: keenan
+#     device_trackers:
+#        - device_tracker.pixel_xl_2
+
+
+input_boolean:
+  person_inside:
+    name: a person of the household is inside the house
+    icon: mdi:human-male
+  person_outside:
+    name: a person of the household is outside the house
+    icon: mdi:human-male
+  exdoor_closed_since:
+    name: exit door closed since person outside flagged
+  all_occupants_inside:
+    name: flag when occupants are home and not outside
+    
+
+
+timer:
+  countdown_since_outside_person:
+    duration: "00:10:00"
+  countdown_since_inside_person:
+    duration: "00:05:00"
+
+automation:
+  - alias: flag when person is inside house
+    trigger:
+      platform: state
+      entity_id: group.interior_motion
+      to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.home_occupied
+        state: 'on'
+      #- condition: state
+      #  entity_id: group.entrance_doors
+      #  state: 'off'
+    action:
+      - service: script.indicate_person_inside
+#      - service: system_log.write
+#        data_template:
+#          message: "flag person is inside: The state of {{trigger.to_state.name}} is {{trigger.to_state.state}}"
+#          level: error
+
+  - alias: reset person outside state machine
+    trigger:
+      - platform: state
+        entity_id: input_boolean.security_camera_voice_alert
+        to: 'on'
+    action:
+      - service: script.reset_person_outside
+
+  - alias: flag when home occupants are all inside
+    trigger:
+      - platform: homeassistant
+        event: start
+      - platform: state
+        entity_id: input_boolean.person_outside
+        to: 'off'
+    condition:
+      - condition: state
+        entity_id: group.entrance_doors
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.home_occupied
+        state: 'on'
+    action:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.all_occupants_inside
+        
+  - alias: flag when person is outside house
+    trigger:
+      - platform: state
+        entity_id: group.outside_person_motion
+        to: 'on'
+        id: outside_motion
+      - platform: state
+        entity_id: group.entrance_doors
+        to: 'on'
+        id: exdoor_opened
+    action:
+      - choose:
+          - conditions:
+              - condition: trigger
+                id: outside_motion
+              - condition: state
+                entity_id: input_boolean.all_occupants_inside
+                state: 'off'
+              - condition: state
+                entity_id: input_boolean.home_occupied
+                state: 'on'
+              - condition: state
+                entity_id: timer.countdown_since_outside_person
+                state: 'idle'
+            sequence:
+              - service: script.indicate_person_outside
+              - service: system_log.write
+                data_template:
+                  message: "flag person is outside: The state of {{trigger.to_state.name}} is {{trigger.to_state.state}}"
+                  level: error
+          - conditions:
+              - condition: trigger
+                id: exdoor_opened
+              - condition: state
+                entity_id: input_boolean.home_occupied
+                state: 'on'
+              - condition: state
+                entity_id: timer.countdown_since_outside_person
+                state: 'idle'
+            sequence:
+              - wait_for_trigger:
+                  - platform: state
+                    entity_id: group.outside_person_motion
+                    to: 'on'
+                timeout:
+                  seconds: 15
+                continue_on_timeout: false
+              - service: script.indicate_person_outside            
+              - service: system_log.write
+                data_template:
+                  message: "flag person is outside: The state of {{trigger.to_state.name}} is {{trigger.to_state.state}}"
+                  level: error
+        default: []
+
+  # use this as part of state machine to detect person leaving from
+  # outside to inside, mainly to prevent clearing person inside flag
+  # while occupant is outside but out of range of cameras & motion detectors
+  - alias: flag when door closed while person outside house
+    trigger:
+      - platform: state
+        entity_id: group.entrance_doors
+        to: 'off'
+    condition:
+      - condition: state
+        entity_id: input_boolean.home_occupied
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.person_outside
+        state: 'on'
+    action:
+      - service: system_log.write
+        data_template:
+          message: "flag outside person entering house: The state of {{trigger.to_state.name}} is {{trigger.to_state.state}}"
+          level: error
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.exdoor_closed_since
+          
+  - alias: clear person presence flag 
+    trigger:
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.countdown_since_outside_person
+        id: outside_timer_cleared
+      - platform: event
+        event_type: timer.finished
+        event_data:
+          entity_id: timer.countdown_since_inside_person
+        id: inside_timer_cleared
+    action:
+      - choose:
+          - conditions:
+              - condition: trigger
+                id: outside_timer_cleared
+              - condition: state
+                entity_id: group.entrance_doors
+                state: 'off'
+              - condition: state
+                entity_id: group.outside_person_motion
+                state: 'off'
+              - condition: state
+                entity_id: input_boolean.exdoor_closed_since
+                state: 'on'
+            sequence:
+              - service: input_boolean.turn_off
+                target:
+                  entity_id: input_boolean.person_outside
+              - service: input_boolean.turn_off
+                target:
+                  entity_id: input_boolean.exdoor_closed_since
+          - conditions:
+              - condition: and
+                conditions:
+                  - condition: trigger
+                    id: outside_timer_cleared
+                  - condition: or
+                    conditions:
+                      - condition: state
+                        entity_id: group.entrance_doors
+                        state: 'on'
+                      - condition: state
+                        entity_id: group.outside_person_motion
+                        state: 'on'
+                      - condition: state
+                        entity_id: input_boolean.exdoor_closed_since
+                        state: 'off'
+            sequence:
+              - service: timer.start
+                target:
+                  entity_id: timer.countdown_since_outside_person
+          - conditions:
+              - condition: trigger
+                id: inside_timer_cleared
+              - condition: state
+                entity_id: group.interior_motion
+                state: 'off'
+            sequence:
+              - service: input_boolean.turn_off
+                target:
+                  entity_id: input_boolean.person_inside
+          - conditions:
+              - condition: and
+                conditions:
+                  - condition: trigger
+                    id: inside_timer_cleared
+                  - condition: state
+                    entity_id: group.interior_motion
+                    state: 'on'
+            sequence:
+              - service: timer.start
+                target:
+                  entity_id: timer.countdown_since_inside_person
+        default: []
+  - alias: handle one occupant leaving
+    # clear the flag related to person outside
+    trigger:
+      platform: state
+      entity_id: input_boolean.individual_departed
+      to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.home_occupied
+        state: 'on'
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.person_outside
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.all_occupants_inside
+script:
+  indicate_person_outside:
+    sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.person_outside
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.all_occupants_inside
+      - service: timer.start
+        target:
+          entity_id: timer.countdown_since_outside_person
+  indicate_person_inside:
+    sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.person_inside
+      - service: timer.start
+        target:
+          entity_id: timer.countdown_since_inside_person
+  reset_person_outside:
+    # set state machine to indicate no home occupant is outside
+    # primarily a helper when security voice alerts are forced on
+    sequence:
+      - service: timer.cancel
+        target:
+          entity_id: timer.countdown_since_outside_person
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.person_outside
+    

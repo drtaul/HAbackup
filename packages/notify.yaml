@@ -1,0 +1,68 @@
+notify:
+  - name: home_hangouts
+    platform: hangouts
+    default_conversations:
+      - id: Ugybdf9-_LQTEud85sJ4AaABAagB24iFCA
+      - id: UgypHPbFD98rS9qxJU14AaABAagBs4e8AQ
+  - name: kay_hangout
+    platform: hangouts
+    default_conversations:
+      - id: UgypHPbFD98rS9qxJU14AaABAagBs4e8AQ
+  - name: dennis_hangout
+    platform: hangouts
+    default_conversations:
+      - id: Ugybdf9-_LQTEud85sJ4AaABAagB24iFCA
+  - name: ha_notify_email
+    platform: smtp
+    server: "smtp.gmail.com"
+    port: 587
+    timeout: 15
+    sender: "taulhome1@gmail.com"
+    encryption: starttls
+    username: "taulhome1@gmail.com"
+    password: "855K@ren"
+    recipient:
+      - "dennis.taul@gmail.com"
+      - "kaytaul@gmail.com"
+    sender_name: "Home Assistant"
+
+
+
+script:
+  text_notify:
+    fields:
+      who:
+        description: list of text items of who to send the message to
+      title:
+        description: title of text message
+      message:
+        description: text of message to send
+      image:
+        description: optional image url
+    sequence:
+      - service: >
+          {% if who == 'dennis' %}
+            notify.dennis_hangout
+          {% elif who == 'kay' %}
+             notify.kay_hangout
+          {% elif who == 'all' %}
+             notify.home_hangouts
+          {% else %}
+             notify.home_hangouts
+          {% endif %}
+        data_template:
+          message: "{{message}}"
+          title: >-
+            {% if title is defined %}
+             "{{title}}"
+            {% else %}
+             ""
+            {% endif %}
+          data:
+            image_url: >-
+              {% if image is defined %}
+               "{{image}}"
+              {% else %}
+               ""
+              {% endif %}
+      

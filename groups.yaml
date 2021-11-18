@@ -1,0 +1,6 @@
+all_speakers:
+  name: all speakers
+  icon: mdi:cast
+  entities:
+  - media_player.google_home
+  - media_player.bonus_room_speaker

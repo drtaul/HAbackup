@@ -1,0 +1,75 @@
+
+automation:
+  - alias: scheduled nightime shutdown
+    trigger:
+      - platform: time
+        at: "22:30:00"
+    condition: []
+    action:
+      - service: switch.turn_off
+        target:
+          entity_id: switch.landscape_lights
+      - service: switch.turn_off
+        target:
+          entity_id: switch.backyard_lights
+  - alias: perform dusk actions
+    trigger:
+      platform: state
+      entity_id: input_boolean.dark_outside
+      to: 'on'
+    condition: []
+    action:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.landscape_lights
+      - service: switch.turn_on
+        target:
+          entity_id: switch.backyard_lights
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.livingroom_awake
+  - alias: prepare for sleep
+    trigger:
+      platform: time_pattern
+      minutes: '/15'
+    condition:
+      condition: and
+      conditions:
+        - condition: time
+          after: '22:30:00'
+          before: '02:00:00'
+        - condition: state
+          entity_id: input_boolean.person_outside
+          state: 'off'
+        - condition: template
+          # last motion more than 20 minutes ago
+          value_template: >-
+            {{ (as_timestamp(now())-as_timestamp(states.group.interior_motion.last_updated)) > 1200 }}
+        - condition: state
+          entity_id: input_boolean.home_asleep_issued
+          state: 'off'
+    action:
+      - service: script.set_sleeptime_scenes
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.home_asleep_issued
+        
+script:
+  set_sleeptime_scenes:
+    sequence:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.dark_outdoors
+      - service: scene.turn_on
+        target:
+          entity_id: scene.close_covers
+      - service: scene.turn_on
+        target:
+          entity_id: scene.security_camera_alerts
+      - service: homeassistant.turn_off
+        target:
+          entity_id: group.downstairs_lights
+      - service: homeassistant.turn_off
+        target:
+          entity_id: group.upstairs_lights
+          

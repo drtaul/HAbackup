@@ -1,0 +1,32 @@
+zone:
+  - name: Home
+    latitude: 36.030185
+    longitude: -78.528480
+    radius: 600
+    icon: mdi:home-map-marker
+
+#automation:
+#  - alias: "Keenan leaving work"
+#    trigger:
+#      - platform: zone
+#        entity_id: person.keenan
+#        zone: zone.Rolls_Royce
+#        event: leave
+#    condition: []
+#    action:
+#        - service: notify.ha_notify_email
+#          data:
+#            title: "Keenan is leaving work"
+#            message: 'Keenan left work at {{now().strftime("%I:%M %p %m/%d/%Y")}}'
+#  - alias: "Keenan arriving at daycare"
+#    trigger:
+#      - platform: zone
+#        entity_id: person.keenan
+#        zone: zone.daycare
+#        event: enter
+#    condition: []
+#    action:
+#        - service: notify.ha_notify_email
+#          data:
+#            title: "Keenan is arriving at daycare"
+#            message: 'Keenan arrived at daycare at {{now().strftime("%I:%M %p %m/%d/%Y")}}'

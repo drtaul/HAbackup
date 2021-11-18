@@ -1,0 +1,19 @@
+intent_script:
+  ReportWeather:
+    speech:
+      text: >
+        {% set condreq = weather %}
+        {% if condreq == "temperature" %}
+          The current temperature is {{ states.sensor.ws_temp.state  }} degrees
+        {% elif condreq == "humidity" %}
+          The current humidity is {{ states.sensor.ws_relative_humidity.state  }} percent
+        {% elif condreq == "rainfall" %}
+          The current rainfall is {{ states.sensor.rain_last_12hr.state|round(2,ceil)  }} inches since 6 oclock
+        {% elif condreq == "wind" %}
+          The current wind speed is {{ states.sensor.ws_wind.state }} miles per hour
+        {% elif condreq == "weather" %}
+          The current temperature is {{ states.sensor.ws_temp.state  }} degrees with a humidity of {{ states.sensor.ws_relative_humidity.state  }} percent. Wind speed is currently {{ states.sensor.ws_wind.state }} miles per hour. The current rainfall is {{ states.sensor.rain_last_12hr.state|round(2,ceil) }} inches since 6 oclock
+        {% else %}
+          Sorry, the current {{ condreq }} condition is not available
+        {% endif %}
+  

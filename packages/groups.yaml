@@ -1,0 +1,70 @@
+group:
+  outdoor_covers:
+    name: Garage or shop door
+    entities:
+      - cover.gdoor
+      - cover.shop_door
+  outdoor_lights:
+    name: Outdoor Lights
+    entities:
+      - switch.sidewalk_light
+      - switch.shop_flood_light
+      - switch.pavilion_floodlight
+      - switch.garage_entrance_light
+      - switch.shop_ceiling_light
+  entrance_doors:
+    name: Entry Exit doors
+    entities:
+      - binary_sensor.back_door
+      - binary_sensor.garage_kitchen_door
+      - binary_sensor.front_door
+  interior_motion:
+    name: Motion inside the house
+    entities:
+      - binary_sensor.attic_motion
+      - binary_sensor.bonus_room_motion
+      - binary_sensor.bonusrm_motion
+      - binary_sensor.mudroom_motion
+      - binary_sensor.office_motion
+      - binary_sensor.living_room_motion
+  outside_person_motion:
+    name: person outside the house
+    entities:
+      - binary_sensor.driveway_person_motion
+      - binary_sensor.backyard_person_motion
+      - binary_sensor.sidewalk_person_motion
+      - binary_sensor.sideyard_person_motion
+      - binary_sensor.garage_person_motion
+      - binary_sensor.crawlspace_motion
+      - binary_sensor.back_porch_motion
+      - binary_sensor.third_reality_inc_3rms16bz_a756e7ff_ias_zone
+  downstairs_lights:
+    name: interior downstairs lights
+    entities:
+      - switch.office_light
+      - switch.living_room_lamps
+      - switch.garage_light
+      - switch.mudroom_light
+      # kay's bedroom lamp
+      - switch.lk_zbt_onoffplug_d0001_e6bbd3fe_on_off
+      - switch.kitchen_ceiling_lights
+      - light.kitchen_counter_lights
+  upstairs_lights:
+    name: all interior lights upstairs
+    entities:
+      - switch.attic_light
+      - switch.office_light
+      - switch.garage_light
+      - switch.mudroom_light
+      # bonus room lamp
+      - switch.lk_zbt_onoffplug_d0001_28bbd3fe_on_off
+      # upstairs bedroom lamp
+      - switch.sonoff_1000a3970d
+  security_camera_recordings:
+    name: security camera recording setting
+    entities:
+      - switch.backyard_recordings
+      - switch.driveway_recordings
+      - switch.garage_recordings
+      - switch.sideyard_recordings
+      - switch.sidewalk_recordings

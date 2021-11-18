@@ -1,0 +1,34 @@
+input_select:
+  bonus_rm_fan:
+    name: bonus rm fan speeds
+    options:
+      - 'off'
+      - low
+      - medium
+      - high
+    initial: 'off'
+
+automation:
+- id: bnrm_fan_off
+  alias: turn off bonus room fan
+  trigger:
+    platform: state
+    entity_id: input_select.bonus_rm_fan
+    to: 'off'
+  action:
+    service: fan.turn_off
+    data:
+      entity_id: fan.sonoff_1000994ed7
+- id: bnrm_fan_speed
+  alias: set bonus room fan speed
+  trigger:
+    platform: state
+    entity_id: input_select.bonus_rm_fan
+  condition:
+    condition: template
+    value_template: "{{ states('input_select.bonus_rm_fan') != 'off' }}"
+  action:
+    service: fan.set_speed
+    data_template:
+      entity_id: fan.sonoff_1000994ed7
+      speed: "{{ states('input_select.bonus_rm_fan') }}"

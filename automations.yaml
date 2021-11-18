@@ -1,0 +1,218 @@
+- id: '1575509291590'
+  alias: set dennis home
+  description: ''
+  trigger:
+  - entity_id: person.dennis_taul
+    from: not_home
+    platform: state
+    to: home
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.dennishome
+    service: input_boolean.turn_on
+- id: '1575509469374'
+  alias: set dennis away
+  description: ''
+  trigger:
+  - from: home
+    platform: state
+    to: not_home
+    entity_id: person.dennis_taul
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.dennishome
+    service: input_boolean.turn_off
+  mode: single
+- id: '1575509874062'
+  alias: set kay home
+  description: ''
+  trigger:
+  - entity_id: person.kay
+    from: not_home
+    platform: state
+    to: home
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.kayhome
+    service: input_boolean.turn_on
+- id: '1575509938684'
+  alias: set kay away
+  description: ''
+  trigger:
+  - entity_id: person.kay
+    from: home
+    platform: state
+    to: not_home
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.kayhome
+    service: input_boolean.turn_off
+- id: '1584037637077'
+  alias: Loss of Power
+  description: UPS input voltage drops below 10 VAC
+  trigger:
+  - below: '10'
+    entity_id: sensor.ups_input_voltage
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: UPS detected power loss
+    service: notify.dennis_hangout
+  mode: single
+- id: '1586812390819'
+  alias: Power restored
+  description: Announce power returned
+  trigger:
+  - above: '100'
+    entity_id: sensor.ups_input_voltage
+    platform: numeric_state
+  condition:
+  - above: '5'
+    condition: numeric_state
+    entity_id: sensor.ha_uptime
+  action:
+  - data:
+      message: Power restored
+    service: notify.dennis_hangout
+  mode: single
+- id: '1586812390920'
+  alias: Frigate Camera Alert
+  trigger:
+  - platform: mqtt
+    topic: frigate/events
+  condition:
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ trigger.payload_json.after.top_score > 0.50 }}'
+    - condition: template
+      value_template: '{{ trigger.payload_json.type == ''new'' }}'
+    - condition: template
+      value_template: '{{ trigger.payload_json.after.label != ''car'' }}'
+    - condition: or
+      conditions:
+      - condition: template
+        value_template: '{{ trigger.payload_json.after.camera == ''sidewalk'' }}'
+      - condition: template
+        value_template: '{{ trigger.payload_json.after.camera == ''driveway'' }}'
+      - condition: template
+        value_template: '{{ trigger.payload_json.after.camera == ''backyard'' }}'
+      - condition: template
+        value_template: '{{ trigger.payload_json.after.camera == ''garage'' }}'
+      - condition: template
+        value_template: '{{ trigger.payload_json.after.camera == ''sideyard'' }}'
+  action:
+  - service: script.announce_frigate_event
+    data:
+      label: '{{trigger.payload_json[''after''][''label'']}}'
+      camera: '{{trigger.payload_json[''after''][''camera'']}}'
+      id: '{{trigger.payload_json[''after''][''id'']}}'
+  - service: script.textalert_frigate_event
+    data:
+      label: '{{trigger.payload_json[''after''][''label'']}}'
+      camera: '{{trigger.payload_json[''after''][''camera'']}}'
+      id: '{{trigger.payload_json[''after''][''id'']}}'
+      image: https://justinkerin.duckdns.org/api/frigate/notifications/{{trigger.payload_json["after"]["id"]}}/thumbnail.jpg?format=android
+- id: '1634772503269'
+  alias: Mount Frigate Clips
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: shell_command.mount_frigate_clips
+  mode: single
+- id: '1634858043165'
+  alias: Car Entering Driveway Alert
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: frigate/events
+  condition:
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ trigger.payload_json.after.top_score > 0.50 }}'
+    - condition: template
+      value_template: '{{ trigger.payload_json.type == ''new'' }}'
+    - condition: template
+      value_template: '{{ trigger.payload_json.after.camera == ''sideyard'' }}'
+    - condition: template
+      value_template: '{{ trigger.payload_json[''after''][''label''] == ''car'' }}'
+    - condition: template
+      value_template: '{{ ''driveway_entrance'' in trigger.payload_json[''after''][''entered_zones'']
+        }}'
+    - condition: template
+      value_template: '{{ not ''driveway_yard'' in trigger.payload_json[''before''][''current_zones'']
+        }}'
+  action:
+  - service: script.announce_frigate_event
+    data:
+      label: '{{trigger.payload_json[''after''][''label'']}}'
+      camera: '{{trigger.payload_json[''after''][''camera'']}}'
+      id: '{{trigger.payload_json[''after''][''id'']}}'
+  - service: script.textalert_frigate_event
+    data:
+      label: '{{trigger.payload_json[''after''][''label'']}}'
+      camera: '{{trigger.payload_json[''after''][''camera'']}}'
+      id: '{{trigger.payload_json[''after''][''id'']}}'
+      image: https://justinkerin.duckdns.org/api/frigate/notifications/{{trigger.payload_json["after"]["id"]}}/thumbnail.jpg?format=android
+  mode: single
+- id: '1635174998226'
+  alias: set dark outside flag
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    id: sundown
+  - platform: sun
+    event: sunrise
+    id: sunup
+  - platform: homeassistant
+    event: start
+    id: ha-start
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: sundown
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.dark_outside
+    - conditions:
+      - condition: trigger
+        id: sunup
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.dark_outside
+    - conditions:
+      - condition: trigger
+        id: ha-start
+      - condition: sun
+        before: sunrise
+        after: sunset
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.dark_outside
+    - conditions:
+      - condition: trigger
+        id: ha-start
+      - condition: sun
+        before: sunset
+        after: sunrise
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.dark_outside
+    default: []
+  mode: single

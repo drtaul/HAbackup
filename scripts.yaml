@@ -1,0 +1,42 @@
+announce_echo:
+  sequence:
+  - service: media_player.volume_set
+    data:
+      volume_level: '{{volume}}'
+    target:
+      entity_id: '{{speaker}}'
+  - service: notify.alexa_media
+    data:
+      target: '{{speaker}}'
+      message: '{{message}}'
+      data:
+        type: tts
+  mode: queued
+  alias: announce_echo
+  max: 10
+announce_gcast:
+  sequence:
+  - service: media_player.volume_set
+    data:
+      volume_level: '{{volume}}'
+    target:
+      entity_id: '{{speaker}}'
+  - service: tts.google_say
+    data:
+      entity_id: '{{speaker}}'
+      message: '{{message}}'
+  mode: queued
+  alias: announce_gcast
+  max: 10
+announce_echo_chk_outside:
+  sequence:
+  - service: python_script.tts_announce_local
+    data_template:
+      speaker: >-
+        {% if states.input_boolean.person_outside.state == 'on' %}
+           All Echos
+        {% else %}
+           bonus room dashboard, living_room_echo, office_echo 
+        {% endif %}
+      message: '{{message}}'
+    

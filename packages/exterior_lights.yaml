@@ -1,0 +1,27 @@
+switch:
+  - platform: mqtt
+    name: "garage entrance light"
+    unique_id: sonoff4ch_1-sw4
+    state_topic: "stat/mudroom-4ch/POWER3"
+    command_topic: "cmnd/mudroom-4ch/POWER3"
+    availability_topic: "tele/mudroom-4ch/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+    icon: mdi:coach-lamp
+  - platform: mqtt
+    name: "sidewalk light"
+    unique_id: sonoff4ch_1-sw3
+    state_topic: "stat/mudroom-4ch/POWER4"
+    command_topic: "cmnd/mudroom-4ch/POWER4"
+    availability_topic: "tele/mudroom-4ch/LWT"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    retain: false
+    icon: mdi:outdoor-lamp

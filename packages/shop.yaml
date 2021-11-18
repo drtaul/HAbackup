@@ -1,0 +1,45 @@
+switch:
+  - platform: mqtt
+    name: "Shop Ceiling Light"
+    state_topic: "shellies/shoplights/relay/0"
+    command_topic: "shellies/shoplights/relay/0/command"
+    payload_on: "on"
+    payload_off: "off"
+    qos: 1
+    retain: false
+    icon: mdi:lamp
+  - platform: mqtt
+    name: "Shop Flood Light"
+    state_topic: "shellies/shoplights/relay/1"
+    command_topic: "shellies/shoplights/relay/1/command"
+    payload_on: "on"
+    payload_off: "off"
+    qos: 1
+    retain: false
+    icon: mdi:spotlight-beam
+cover:
+  - platform: mqtt
+    name: "Shop Door"
+    command_topic: "cmnd/shelly-shop-door/POWER"
+    state_topic: "stat/shelly-shop-door/status"
+    availability_topic: "tele/shelly-shop-door/LWT"
+    qos: 1
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    payload_open: "ON"
+    payload_close: "ON"
+    payload_stop: "ON"
+    state_open: "open"
+    state_closed: "closed"
+    device_class: garage
+binary_sensor:
+  - platform: mqtt
+    name: "Shop Door State"
+    state_topic: "stat/shelly-shop-door/status"
+    payload_on: "open"
+    payload_off: "closed"
+    availability_topic: "tele/shelly-shop-door/LWT"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    qos: 1
+    device_class: opening 

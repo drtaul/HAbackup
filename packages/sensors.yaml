@@ -1,0 +1,56 @@
+#sensor:
+#  platform: apcupsd
+#  resources:
+#    - apc
+#    - date
+#    - hostname
+#    - version
+#    - upsname
+#    - cable
+#    - driver
+#    - upsmode
+#    - starttime
+#    - model
+#    - status
+#    - linev
+#    - loadpct
+#    - bcharge
+#    - timeleft
+#    - mbattchg
+#    - mintimel
+#    - maxtime
+
+sensor:
+#  - platform: nut
+#    name: Cyberpower 1500
+#    username: dennis
+#    password: 336647
+#    resources:
+#      - ups.load
+#      - ups.realpower.nominal
+#      - ups.status.display
+#      - input.voltage
+#      - battery.runtime
+#      - battery.charge
+  - platform: statistics
+    entity_id: sensor.ws_rain
+    name: Rain Current Week
+    sampling_size: 10080
+    max_age:
+      minutes: 10080
+  - platform: statistics
+    entity_id: sensor.ws_wind
+    name: Avg Wind Speed
+    sampling_size: 60
+    max_age:
+      minutes: 60
+
+#  - platform: template
+#    sensors:
+#      rain_8h_total:
+#        value_template: >-
+#            '{%- if not is_state("sensor.ws_rain","unknown") -%}  
+#                {{ ((states.sensor.ws_rain.state | float) +  }} 
+#             {%- endif -%}' 
+#        friendly_name: 'Rain Last 8 hrs'
+#        unit_of_measurement: 'in'

@@ -1,0 +1,4 @@
+mqtt:
+  broker: !secret hassio_ip_address
+  username: !secret mqtt_user
+  password: !secret mqtt_pw

@@ -1,0 +1,44 @@
+input_boolean:
+  home_asleep_issued:
+    name: exec of prepare for sleep successful
+  livingroom_awake:
+    name: living area scene set for the day
+
+automation:
+  - alias: home assistant restart
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.home_asleep_issued
+  - alias: daily morning reset
+    trigger:
+      - platform: time
+        at: "04:45:00"
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.home_asleep_issued
+  - alias: living area wakeup
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.living_room_motion
+        to: 'on'
+    condition:
+      - condition: time
+        after: '6:30:00'
+        before: '12:00:00'
+      - condition: state
+        entity_id: input_boolean.livingroom_awake
+        state: 'off'
+    action:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.living_area_wakeup
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.livingroom_awake
+      
+      

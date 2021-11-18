@@ -1,0 +1,90 @@
+
+input_boolean:
+  office_light_auto_on:
+    name: Office Light turned on by motion
+    initial: off
+
+automation:
+  - alias: handle office motion detected
+    trigger:
+      platform: state
+      entity_id: binary_sensor.office_motion
+      to: 'on'
+    condition:
+      - condition: state
+        entity_id: sun.sun
+        state: 'below_horizon'
+      - condition: state
+        entity_id: switch.office_light
+        state: 'off'
+    action:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.office_light
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.office_light_auto_on
+  - alias: handle office motion cleared
+    trigger:
+      platform: state
+      entity_id: binary_sensor.office_motion
+      to: 'off'
+      for:
+        minutes: 15
+    condition:
+      - condition: state
+        entity_id: input_boolean.office_light_auto_on
+        state: 'on'
+      - condition: state
+        entity_id: switch.office_light
+        state: 'on'
+    action:
+      - service: switch.turn_off
+        target:
+          entity_id: switch.office_light
+  # turn off boolean auto flag whenever the light switch is off
+  # this effectively provides a manual override if you immediately
+  # turn the switch back on or reach in before you walk in to turn
+  # the light on (when it is dark)
+  - alias: handle office light switch off
+    trigger:
+      platform: state
+      entity_id: switch.office_light
+      to: 'off'
+    condition:
+      - condition: state
+        entity_id: input_boolean.office_light_auto_on
+        state: 'on'
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.office_light_auto_on
+  - alias: follow office light switch
+    trigger:
+      platform: state
+      entity_id: switch.office_light
+    condition:
+      - condition: template
+        value_template: '{{ trigger.from_state.state != "unavailable" }}'
+      - condition: template
+        value_template: '{{ trigger.to_state.state != "unavailable" }}'
+      - condition: template
+        value_template: '{{ trigger.from_state.state != trigger.to_state.state }}'
+    action:
+      service_template: >-
+        {% if trigger.to_state.state == 'off' %}
+          switch.turn_off
+        {% else %}
+          switch.turn_on
+        {% endif %}
+      target:
+        entity_id: switch.office_desk_light
+        
+# careful with attempt to override, given switch state is affected by
+# other automations
+#  - alias: handle office switch override
+#    trigger:
+#      platform: state
+#      entity_id: switch.office_light
+#      to: 'on'
+          
