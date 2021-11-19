@@ -23,8 +23,8 @@
 sensor:
 #  - platform: nut
 #    name: Cyberpower 1500
-#    username: dennis
-#    password: 336647
+#    username: !secret defaultuser
+#    password: !secret zm_passwd
 #    resources:
 #      - ups.load
 #      - ups.realpower.nominal

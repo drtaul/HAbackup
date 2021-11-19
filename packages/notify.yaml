@@ -17,13 +17,13 @@ notify:
     server: "smtp.gmail.com"
     port: 587
     timeout: 15
-    sender: "taulhome1@gmail.com"
+    sender: !secret themail
     encryption: starttls
-    username: "taulhome1@gmail.com"
-    password: "855K@ren"
+    username: !secret themail
+    password: !secret strongpw_1
     recipient:
-      - "dennis.taul@gmail.com"
-      - "kaytaul@gmail.com"
+      - !secret email
+      - !secret kemail
     sender_name: "Home Assistant"
 
 

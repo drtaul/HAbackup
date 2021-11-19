@@ -1,11 +1,3 @@
-#cover:
-#   - platform: myq
-#     username: dennis.taul@gmail.com
-#     password: 855K@ren
-
-#     username: !secret email
-#     password: !secret strongpw_1
-
 group:
   garage_lights:
     name: Garage Lights

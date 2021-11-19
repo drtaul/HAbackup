@@ -1,7 +1,7 @@
 # turn this off until we get another robot vacuum
 #deebot:
-#    username: dennis.taul@gmail.com
-#    password: 855karen
+#    username: !secret email
+#    password: !secret defaulpw
 #    country: us
 #    continent: na
 #    deviceid: E0000760319602690280

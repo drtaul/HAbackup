@@ -96,7 +96,7 @@ wake_on_lan: # enables `wake_on_lan` domain
 
 recorder:
   purge_keep_days: 5
-#  db_url: mysql://homeassistant:855karen@192.168.1.7/homeassistant?charset=utf8
+
 
 # Checks for available updates
 # Note: This component will send some information about your system to
