@@ -60,6 +60,13 @@ group:
       - switch.lk_zbt_onoffplug_d0001_28bbd3fe_on_off
       # upstairs bedroom lamp
       - switch.sonoff_1000a3970d
+  master_bedroom_lights:
+    name: master bedroom lights
+    entities:
+      - light.master_bedroom_fan_light
+      - switch.master_bedroom_ceiling_lights
+      - switch.lk_zbt_onoffplug_d0001_e6bbd3fe_on_off
+      - switch.sonoff_1000a39d06
   security_camera_recordings:
     name: security camera recording setting
     entities:
