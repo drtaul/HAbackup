@@ -19,10 +19,13 @@
 # This is only valid if you install Node-RED as Home Assistant Add-on
 !node-red/
 !packages/
+# allow these subdirectories to be included
 !python_scripts/
+!custom_components/
 
 # Uncomment this if you don' want to include secrets.yaml 
-#secrets.yaml
+secrets.yaml
+packages/google_assistant.yaml
 
 # Ignore these files/folders
 .storage
