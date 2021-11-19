@@ -21,7 +21,7 @@
 !packages/
 # allow these subdirectories to be included
 !python_scripts/
-!custom_components/
+#!custom_components/
 
 # Uncomment this if you don' want to include secrets.yaml 
 secrets.yaml
