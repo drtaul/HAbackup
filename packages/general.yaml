@@ -29,6 +29,8 @@ alexa:
     locale: en-US
     filter:
       include_domains:
+        - light
+        - switch
         - cover
         - fan
         - climate
@@ -38,6 +40,11 @@ alexa:
 sensor:
   - platform: uptime
     name: "HA uptime"
+  - platform: template
+    sensors:
+      uptime_minutes:
+        value_template: >-
+          {{ (as_timestamp(now()) - as_timestamp(states('sensor.ha_uptime'))) // 60| round (0)  }}
 
 history:
 

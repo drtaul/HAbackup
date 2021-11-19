@@ -100,7 +100,7 @@ automation:
       - service: mqtt.publish
         data_template:
             topic: 'pws/outHumidity'
-            payload: "{{ states('sensor.ws_relative_humidity')|float }}"
+            payload: "{{ states('sensor.ws_relative_humidity')|float(30) }}"
       - service: mqtt.publish
         data_template:
             topic: 'pws/barometer'
