@@ -26,6 +26,7 @@
 # Uncomment this if you don' want to include secrets.yaml 
 secrets.yaml
 packages/google_assistant.yaml
+packages/Taul*.json
 
 # Ignore these files/folders
 .storage
