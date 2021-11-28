@@ -205,7 +205,7 @@ script:
       - service: input_text.set_value
         data:
           entity_id: input_text.exdooropen_list
-          value_template: >-
+          value: >-
             {% set ns = namespace(doors = []) %}
             {% for t in expand(doors) | selectattr('state', 'eq', 'on') | list  %}
               {% set ns.doors = ns.doors + ['{}'.format(t.name)] %}

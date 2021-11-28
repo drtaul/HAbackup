@@ -49,24 +49,37 @@ group:
       - switch.lk_zbt_onoffplug_d0001_e6bbd3fe_on_off
       - switch.kitchen_ceiling_lights
       - light.kitchen_counter_lights
+  bonus_room_lights:
+    name: bonus room lights
+    entities:
+      # bonus room lamp
+      - switch.lk_zbt_onoffplug_d0001_28bbd3fe_on_off
+      # bonus room fan light
+      - light.sonoff_1000994ed7_1
+  upstairs_bedroom_lights:
+    name: upstairs bedroom lights
+    entities:
+      # upstairs bedroom lamp
+      - switch.sonoff_1000a3970d
+      # upstairs bedroom fan light
+      - light.upstairs_bedroom_fan_light
   upstairs_lights:
     name: all interior lights upstairs
     entities:
       - switch.attic_light
-      - switch.office_light
-      - switch.garage_light
-      - switch.mudroom_light
-      # bonus room lamp
-      - switch.lk_zbt_onoffplug_d0001_28bbd3fe_on_off
-      # upstairs bedroom lamp
-      - switch.sonoff_1000a3970d
+      - group.bonus_room_lights
+      - group.upstairs_bedroom_lights
+  master_bedroom_lamps:
+    name: master bedroom lamps
+    entities:
+      - switch.lk_zbt_onoffplug_d0001_e6bbd3fe_on_off
+      - switch.sonoff_1000a39d06
   master_bedroom_lights:
     name: master bedroom lights
     entities:
       - light.master_bedroom_fan_light
       - switch.master_bedroom_ceiling_lights
-      - switch.lk_zbt_onoffplug_d0001_e6bbd3fe_on_off
-      - switch.sonoff_1000a39d06
+      - group.master_bedroom_lamps
   security_camera_recordings:
     name: security camera recording setting
     entities:

@@ -36,6 +36,7 @@ alexa:
         - climate
         - scene
         - group
+        - media_player
     
 sensor:
   - platform: uptime
