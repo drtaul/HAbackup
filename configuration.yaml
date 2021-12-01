@@ -94,3 +94,4 @@ scene: !include scenes.yaml
 
 switch: !include_dir_merge_list switches
 input_boolean: !include input_boolean.yaml
+input_text: !include input_text.yaml

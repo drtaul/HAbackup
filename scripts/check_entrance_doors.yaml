@@ -1,0 +1,17 @@
+sequence:
+  - variables:
+      doors:
+        - binary_sensor.front_door
+        - binary_sensor.crawlspace_door
+        - binary_sensor.garage_kitchen_door
+        - binary_sensor.back_door
+        - binary_sensor.front_door
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.exdooropen_list
+      value: >-
+        {% set ns = namespace(doors = []) %}
+        {% for t in expand(doors) | selectattr('state', 'eq', 'on') | list  %}
+          {% set ns.doors = ns.doors + ['{}'.format(t.name)] %}
+        {% endfor %}
+        {{ ns.doors | join(',')}}

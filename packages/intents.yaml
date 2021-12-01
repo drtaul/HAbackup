@@ -1,6 +1,3 @@
-input_text:
-  sb_player:
-    name: last_sb_player
 intent_script:
   QueryPws:
     speech:

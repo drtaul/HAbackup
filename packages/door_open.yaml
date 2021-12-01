@@ -5,12 +5,6 @@ timer:
   coversopen:
     duration: "00:10:00"
 
-input_text:
-  dooropen_list:
-    name: Open Doors
-    max: 255
-  
-
 automation:
   - alias: start door open timer
     trigger:
@@ -118,50 +112,3 @@ automation:
           - service: timer.start
             target:
               entity_id: timer.coversopen
-                    
-
-script:
-  close_covers_wannounce:
-    sequence:
-      - service: script.announce_echo_chk_outside
-        data_template:
-          message: >-
-            {% set covers = states | selectattr('entity_id', 'in', state_attr('group.outdoor_covers','entity_id'))| selectattr('state','eq','open')| map(attribute='name') | list %}
-            {%- for entity_id in covers -%}
-              {% if loop.first %} Closing the {% elif loop.last %} and the {% endif %}
-               {{ entity_id }}
-            {%- endfor -%}.
-      - service: script.close_covers
-
-          
-  update_doorsopen_list:
-    sequence:
-      - variables:
-          doors:
-            - binary_sensor.attic_monitor_door
-            - binary_sensor.crawlspace_door
-            - binary_sensor.garage_kitchen_door
-            - binary_sensor.upstairs_door
-            - binary_sensor.front_door
-      - service: input_text.set_value
-        data:
-          entity_id: input_text.dooropen_list
-          value: >-
-            {% set ns = namespace(doors = []) %}
-            {% for t in expand(doors) | selectattr('state', 'eq', 'on') | list  %}
-              {% set ns.doors = ns.doors + ['{}'.format(t.name)] %}
-            {% endfor %}
-            {{ ns.doors | join(',')}}
-  close_covers:
-    sequence:
-      - choose:
-          - conditions:
-              - condition: state
-                entity_id: group.outdoor_covers
-                state: 'open'
-            sequence:
-              - service: cover.close_cover
-                data_template:
-                  entity_id: >-
-                    {{states | selectattr('entity_id', 'in', state_attr('group.outdoor_covers','entity_id'))| selectattr('state','eq','open')| map(attribute='entity_id') | list | join(',') }}
-        default: []

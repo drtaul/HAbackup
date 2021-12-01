@@ -1,0 +1,10 @@
+dooropen_list:
+  name: Open Doors
+  max: 255
+exdooropen_list:
+  name: Entrance Open Doors
+  max: 255
+# last squeezebox player
+# referred to from intents scripts for rhasspy
+sb_player:
+  name: last_sb_player
