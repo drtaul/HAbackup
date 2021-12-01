@@ -19,6 +19,8 @@
 # This is only valid if you install Node-RED as Home Assistant Add-on
 !node-red/
 !packages/
+!scripts/
+!switches/
 # allow these subdirectories to be included
 !python_scripts/
 #!custom_components/

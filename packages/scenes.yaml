@@ -44,6 +44,3 @@ scene:
   - name: living area wakeup
     entities:
       switch.living_room_lamps: "on"
-      switch.kitchen_ceiling_lights: "on"
-      
-      

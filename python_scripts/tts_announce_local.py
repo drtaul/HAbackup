@@ -11,7 +11,7 @@ def get_devices(sl, echolist, gcastlist):
                 'living_room_echo': ('echo', 'media_player.living_room_echo'),
                 'pavilion_echo': ('echo', 'media_player.pavilion_echo'),
                 'master_bedroom_echo': ('echo', 'media_player.master_bedroom_echo'),
-                'bonus_room_cube': ('echo', 'media_player.bonus_room_cube')
+                'bonus_room_cube': ('echo', 'media_player.bonus_room_cube'),
                 'all_echos': ('broadcast_echo', 'NA'),
                 'all_googles': ('broadcast_gcast', 'NA'),
                 'all': ('broadcast', 'NA')}

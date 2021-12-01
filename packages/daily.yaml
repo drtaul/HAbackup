@@ -1,8 +1,3 @@
-input_boolean:
-  home_asleep_issued:
-    name: exec of prepare for sleep successful
-  livingroom_awake:
-    name: living area scene set for the day
 
 automation:
   - alias: home assistant restart
@@ -28,7 +23,7 @@ automation:
         to: 'on'
     condition:
       - condition: time
-        after: '6:30:00'
+        after: '06:30:00'
         before: '12:00:00'
       - condition: state
         entity_id: input_boolean.livingroom_awake

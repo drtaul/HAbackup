@@ -1,0 +1,19 @@
+fields:
+  label:
+    description: "Frigate Event Label"
+  camera:
+    description: "Frigate Event Camera"
+  id:
+    description: "Frigate Event ID"
+  image:
+    description: "image url"
+sequence:
+  - condition: state
+    entity_id: input_boolean.security_camera_notify
+    state: "on"
+  - service: notify.dennis_hangout
+    data_template:
+      message: "A {{label}} is detected on the {{camera}} camera."
+      data:
+        image_url: "{{image}}"
+mode: single

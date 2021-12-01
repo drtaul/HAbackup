@@ -1,10 +1,3 @@
-input_boolean:
-  guest_mode:
-    name: guest mode
-  security_mode:
-    name: security mode
-    icon: mdi:security
-
 input_text:
   exdooropen_list:
     name: Entrance Open Doors
@@ -20,7 +13,7 @@ automation:
       condition: and
       conditions:
         - condition: time
-          after: '6:30:00'
+          after: '06:30:00'
           before: '22:30:00'
         - condition: state
           entity_id: input_boolean.person_inside
@@ -43,7 +36,7 @@ automation:
       condition: and
       conditions:
         - condition: time
-          after: '6:30:00'
+          after: '06:30:00'
           before: '22:30:00'
         - condition: state
           entity_id: input_boolean.person_inside
@@ -72,7 +65,7 @@ automation:
             {% set exdoors = states | selectattr('entity_id', 'in', state_attr('group.entrance_doors','entity_id'))| selectattr('state','eq','open')| map(attribute='name') | list %}
             {%- for entity_id in exdoors -%}
               {% if loop.first %} Detected opening of the {% elif loop.last %} and the {% endif %}
-               {{ entity_id }}
+                {{ entity_id }}
             {%- endfor -%}.
             
           who: "dennis"

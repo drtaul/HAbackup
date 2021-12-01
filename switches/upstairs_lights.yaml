@@ -1,0 +1,12 @@
+- platform: mqtt
+  name: "Attic Light"
+  state_topic: "stat/attic_lightsw_77245E/RESULT"
+  value_template: "{{ value_json.POWER }}"
+  command_topic: "cmnd/attic_lightsw_77245E/POWER"
+  availability_topic: "tele/attic_lightsw_77245E/LWT"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  icon: mdi:lamp

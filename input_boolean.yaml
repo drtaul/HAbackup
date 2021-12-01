@@ -1,0 +1,27 @@
+dark_outside:
+  name: Dark Outside
+  icon: mdi:weather-sunset
+security_camera_notify:
+  name: Security Camera Text Alert
+  icon: mdi:camera-burst
+security_camera_voice_alert:
+  name: Security Camera Voice Alert
+  icon: mdi:camera-burst
+person_upstairs:
+  name: Person Upstairs
+  icon: mdi:human-male
+ws_defeat_sleep:
+  name: "Disable sleep on WS"
+climate_heat_mode:
+  name: "Enable thermostat heating mode"
+
+home_asleep_issued:
+  name: exec of prepare for sleep successful
+livingroom_awake:
+  name: living area scene set for the day
+
+guest_mode:
+  name: guest mode
+security_mode:
+  name: security mode
+  icon: mdi:security

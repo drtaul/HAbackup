@@ -1,0 +1,15 @@
+sequence:
+- service: media_player.volume_set
+  data:
+    volume_level: '{{volume}}'
+  target:
+    entity_id: '{{speaker}}'
+- service: notify.alexa_media
+  data:
+    target: '{{speaker}}'
+    message: '{{message}}'
+    data:
+      type: tts
+mode: queued
+alias: announce_echo
+max: 10

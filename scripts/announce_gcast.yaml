@@ -1,0 +1,13 @@
+sequence:
+- service: media_player.volume_set
+  data:
+    volume_level: '{{volume}}'
+  target:
+    entity_id: '{{speaker}}'
+- service: tts.google_say
+  data:
+    entity_id: '{{speaker}}'
+    message: '{{message}}'
+mode: queued
+alias: announce_gcast
+max: 10

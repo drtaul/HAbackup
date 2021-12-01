@@ -36,91 +36,12 @@ tts:
 
 frontend:
   themes: !include_dir_merge_named themes
-
-input_boolean:
-  dark_outside:
-    name: Dark Outside
-    icon: mdi:weather-sunset
-  security_camera_notify:
-    name: Security Camera Text Alert
-    icon: mdi:camera-burst
-  security_camera_voice_alert:
-    name: Security Camera Voice Alert
-    icon: mdi:camera-burst
-  person_upstairs:
-    name: Person Upstairs
-    icon: mdi:human-male
-  ws_defeat_sleep:
-    name: "Disable sleep on WS"
-  climate_heat_mode:
-    name: "Enable thermostat heating mode"
     
 
 #tplink:
 #  switch:
 #    - host: 192.168.1.25
     
-switch:
-  - platform: mqtt
-    name: "Attic Light"
-    state_topic: "stat/attic_lightsw_77245E/RESULT"
-    value_template: "{{ value_json.POWER }}"
-    command_topic: "cmnd/attic_lightsw_77245E/POWER"
-    availability_topic: "tele/attic_lightsw_77245E/LWT"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    icon: mdi:lamp
-  - platform: mqtt
-    name: "backyard-lights"
-    state_topic: "stat/backyard-lights/RESULT"
-    value_template: "{{ value_json.POWER }}"
-    command_topic: "cmnd/backyard-lights/POWER"
-    availability_topic: "tele/backyard-lights/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
-    icon: mdi:spotlight-beam
-  - platform: mqtt
-    name: "Landscape Lights"
-    state_topic: "stat/landscape-lights/RESULT"
-    value_template: "{{ value_json.POWER }}"
-    command_topic: "cmnd/landscape-lights/POWER"
-    availability_topic: "tele/landscape-lights/LWT"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    retain: false
-    icon: mdi:spotlight-beam    
-  - platform: mqtt
-    name: "Crawlspace Light"
-    state_topic: "stat/crawlspace-light/RESULT"
-    value_template: "{{ value_json.POWER }}"
-    command_topic: "cmnd/crawlspace-light/POWER"
-    availability_topic: "tele/crawlspace-light/LWT"
-    payload_available: "Online"
-    payload_not_available: "Offline"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    icon: mdi:lamp
-  - platform: mqtt
-    name: "kitchen ceiling lights"
-    state_topic: "stat/kitchen-ceiling-lights/POWER1"
-    command_topic: "cmnd/kitchen-ceiling-lights/EVENT"
-    availability_topic: "tele/kitchen-ceiling-lights/LWT"
-    qos: 0
-    payload_on: "ON"
-    payload_off: "OFF"
-    payload_available: "Online"
-    payload_not_available: "Offline"
     
 lock:
   - platform: mqtt
@@ -167,5 +88,9 @@ shell_command:
 
 group: !include groups.yaml
 automation: !include automations.yaml
-script: !include scripts.yaml
+#script: !include scripts.yaml
+script: !include_dir_named scripts/
 scene: !include scenes.yaml
+
+switch: !include_dir_merge_list switches
+input_boolean: !include input_boolean.yaml

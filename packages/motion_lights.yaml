@@ -1,0 +1,65 @@
+automation:
+  - alias: handle kitchen motion detected
+    trigger:
+      platform: state
+      entity_id: binary_sensor.living_room_motion
+      to: 'on'
+    condition:
+      - condition: time
+        after: '23:50:00'
+        before: '06:30:00'
+      - condition: state
+        entity_id: light.kitchen_counter_lights
+        state: 'off'
+    action:
+      - service: light.turn_on
+        target:
+          entity_id: light.kitchen_counter_lights
+        data:
+          brightness_pct: 20
+  - alias: handle kitchen motion cleared
+    trigger:
+      platform: state
+      entity_id: binary_sensor.living_room_motion
+      to: 'off'
+      for:
+        minutes: 4
+    condition:
+      - condition: time
+        after: '23:50:00'
+        before: '06:30:00'
+      - condition: state
+        entity_id: light.kitchen_counter_lights
+        state: 'on'
+    action:
+      - service: light.turn_off
+        target:
+          entity_id: light.kitchen_counter_lights
+  - alias: handle mudroom motion detected
+    trigger:
+      platform: state
+      entity_id: binary_sensor.mudroom_motion
+      to: 'on'
+    condition:
+      - condition: state
+        entity_id: switch.mudroom_light
+        state: 'off'
+    action:
+      - service: switch.turn_on
+        target:
+          entity_id: switch.mudroom_light
+  - alias: handle mudroom motion cleared
+    trigger:
+      platform: state
+      entity_id: binary_sensor.mudroom_motion
+      to: 'off'
+      for:
+        minutes: 3
+    condition:
+      - condition: state
+        entity_id: switch.mudroom_light
+        state: 'on'
+    action:
+      - service: switch.turn_off
+        target:
+          entity_id: switch.mudroom_light

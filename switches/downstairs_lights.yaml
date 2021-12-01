@@ -1,0 +1,10 @@
+- platform: mqtt
+  name: "kitchen ceiling lights"
+  state_topic: "stat/kitchen-ceiling-lights/POWER1"
+  command_topic: "cmnd/kitchen-ceiling-lights/EVENT"
+  availability_topic: "tele/kitchen-ceiling-lights/LWT"
+  qos: 0
+  payload_on: "ON"
+  payload_off: "OFF"
+  payload_available: "Online"
+  payload_not_available: "Offline"

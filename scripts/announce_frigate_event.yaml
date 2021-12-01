@@ -1,0 +1,15 @@
+fields:
+  label:
+    description: "Frigate Event Label"
+  camera:
+    description: "Frigate Event Camera"
+  id:
+    description: "Frigate Event ID"
+sequence:
+  - condition: state
+    entity_id: input_boolean.security_camera_voice_alert
+    state: "on"
+  - service: script.announce_echo_chk_outside
+    data_template:
+        message: "A {{label}} is detected on the {{camera}} camera."
+mode: single

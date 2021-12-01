@@ -1,0 +1,38 @@
+- platform: mqtt
+  name: "backyard-lights"
+  state_topic: "stat/backyard-lights/RESULT"
+  value_template: "{{ value_json.POWER }}"
+  command_topic: "cmnd/backyard-lights/POWER"
+  availability_topic: "tele/backyard-lights/LWT"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  retain: false
+  icon: mdi:spotlight-beam
+- platform: mqtt
+  name: "Landscape Lights"
+  state_topic: "stat/landscape-lights/RESULT"
+  value_template: "{{ value_json.POWER }}"
+  command_topic: "cmnd/landscape-lights/POWER"
+  availability_topic: "tele/landscape-lights/LWT"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  retain: false
+  icon: mdi:spotlight-beam    
+- platform: mqtt
+  name: "Crawlspace Light"
+  state_topic: "stat/crawlspace-light/RESULT"
+  value_template: "{{ value_json.POWER }}"
+  command_topic: "cmnd/crawlspace-light/POWER"
+  availability_topic: "tele/crawlspace-light/LWT"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  icon: mdi:lamp
