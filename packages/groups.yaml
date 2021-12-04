@@ -88,3 +88,8 @@ group:
       - switch.garage_recordings
       - switch.sideyard_recordings
       - switch.sidewalk_recordings
+  garage_lights:
+    name: Garage Lights
+    entities:
+      - switch.garage_light
+      - switch.garage_entrance_light

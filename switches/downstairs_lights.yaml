@@ -20,3 +20,34 @@
   icon: mdi:lamp
   qos: 1
   retain: false
+# part of the sonoff R4 in the mudroom wall switch box
+# this is connected to the 2nd switch from the right
+- platform: mqtt
+  name: "mudroom light"
+  unique_id: sonoff4ch_1-sw2
+  state_topic: "stat/mudroom-4ch/POWER2"
+  command_topic: "cmnd/mudroom-4ch/POWER2"
+  availability_topic: "tele/mudroom-4ch/LWT"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  retain: false
+  icon: mdi:ceiling-light
+# part of the sonoff R4 in the mudroom wall switch box
+# this is connected to the first switch from the right
+- platform: mqtt
+  name: "garage light"
+  unique_id: sonoff4ch_1-sw1
+  state_topic: "stat/mudroom-4ch/POWER1"
+  command_topic: "cmnd/mudroom-4ch/POWER1"
+  availability_topic: "tele/mudroom-4ch/LWT"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  retain: false
+  icon: mdi:home-lightbulb-outline
+

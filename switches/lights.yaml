@@ -1,3 +1,5 @@
+# pavilion hardscape paver lights controlled
+# by a sonoff basic powering a landcape lighting transformer
 - platform: mqtt
   name: "backyard-lights"
   state_topic: "stat/backyard-lights/RESULT"
@@ -11,6 +13,10 @@
   payload_not_available: "Offline"
   retain: false
   icon: mdi:spotlight-beam
+# front house landscape lights controlled
+# by sonoff basic located in the crawlspace
+# sonoff controls power to landscape transformer
+# next to the crawlspace door
 - platform: mqtt
   name: "Landscape Lights"
   state_topic: "stat/landscape-lights/RESULT"
@@ -23,7 +29,8 @@
   payload_available: "Online"
   payload_not_available: "Offline"
   retain: false
-  icon: mdi:spotlight-beam    
+  icon: mdi:spotlight-beam
+# shelly 1 in wallswitch box next to crawlspace door
 - platform: mqtt
   name: "Crawlspace Light"
   state_topic: "stat/crawlspace-light/RESULT"
@@ -36,3 +43,33 @@
   payload_on: "ON"
   payload_off: "OFF"
   icon: mdi:lamp
+# part of the sonoff R4 in the mudroom wall switch box
+# this is connected to the first switch from the left
+- platform: mqtt
+  name: "garage entrance light"
+  unique_id: sonoff4ch_1-sw4
+  state_topic: "stat/mudroom-4ch/POWER3"
+  command_topic: "cmnd/mudroom-4ch/POWER3"
+  availability_topic: "tele/mudroom-4ch/LWT"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  retain: false
+  icon: mdi:coach-lamp
+# part of the sonoff R4 in the mudroom wall switch box
+# this is connected to the 2nd switch from the left
+- platform: mqtt
+  name: "sidewalk light"
+  unique_id: sonoff4ch_1-sw3
+  state_topic: "stat/mudroom-4ch/POWER4"
+  command_topic: "cmnd/mudroom-4ch/POWER4"
+  availability_topic: "tele/mudroom-4ch/LWT"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  retain: false
+  icon: mdi:outdoor-lamp

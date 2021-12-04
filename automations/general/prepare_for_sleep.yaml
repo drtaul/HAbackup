@@ -1,0 +1,28 @@
+alias: prepare for sleep
+trigger:
+  platform: time_pattern
+  minutes: '/15'
+condition:
+  condition: and
+  conditions:
+    - condition: time
+      after: '23:50:00'
+      before: '03:00:00'
+    - condition: state
+      entity_id: input_boolean.person_outside
+      state: 'off'
+    - condition: template
+      # last motion more than 20 minutes ago
+      value_template: >-
+        {{ (as_timestamp(now())-as_timestamp(states.group.interior_motion.last_updated)) > 1200 }}
+    - condition: state
+      entity_id: input_boolean.home_asleep_issued
+      state: 'off'
+    - condition: state
+      entity_id: media_player.sony_bravia_tv
+      state: 'off'
+action:
+  - service: script.set_sleeptime_scenes
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.home_asleep_issued

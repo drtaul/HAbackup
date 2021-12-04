@@ -27,6 +27,9 @@
 !automations/
 !automations/master_bedroom/
 !automations/upstairs_bedroom/
+!automations/general/
+!automations/garage/
+
 # allow these subdirectories to be included
 !python_scripts/
 #!custom_components/
