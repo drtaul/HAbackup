@@ -35,6 +35,7 @@
 secrets.yaml
 packages/google_assistant.yaml
 packages/Taul*.json
+.sonoff.json
 
 # Ignore these files/folders
 .storage
