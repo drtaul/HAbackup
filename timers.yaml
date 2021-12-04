@@ -1,0 +1,9 @@
+dooropen:
+  duration: "00:10:00"
+coversopen:
+  duration: "00:10:00"
+countdown_since_outside_person:
+  duration: "00:10:00"
+countdown_since_inside_person:
+  duration: "00:05:00"
+  

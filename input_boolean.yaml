@@ -15,6 +15,21 @@ ws_defeat_sleep:
 climate_heat_mode:
   name: "Enable thermostat heating mode"
 
+office_light_auto_on:
+  name: Office Light turned on by motion
+  initial: off
+
+person_inside:
+  name: a person of the household is inside the house
+  icon: mdi:human-male
+person_outside:
+  name: a person of the household is outside the house
+  icon: mdi:human-male
+exdoor_closed_since:
+  name: exit door closed since person outside flagged
+all_occupants_inside:
+  name: flag when occupants are home and not outside
+  
 home_asleep_issued:
   name: exec of prepare for sleep successful
 livingroom_awake:
@@ -25,3 +40,15 @@ guest_mode:
 security_mode:
   name: security mode
   icon: mdi:security
+# home occupied related flags
+dennishome:
+  name: Dennis Home
+  icon: mdi:human-male
+kayhome:
+  name: Kay Home
+  icon: mdi:human-female
+home_occupied:
+  name: Home Occupied
+  icon: mdi:human-male-female
+individual_departed:
+  name: home occupant arriving or leaving

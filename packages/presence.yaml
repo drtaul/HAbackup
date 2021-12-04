@@ -41,26 +41,6 @@
 #        - device_tracker.pixel_xl_2
 
 
-input_boolean:
-  person_inside:
-    name: a person of the household is inside the house
-    icon: mdi:human-male
-  person_outside:
-    name: a person of the household is outside the house
-    icon: mdi:human-male
-  exdoor_closed_since:
-    name: exit door closed since person outside flagged
-  all_occupants_inside:
-    name: flag when occupants are home and not outside
-    
-
-
-timer:
-  countdown_since_outside_person:
-    duration: "00:10:00"
-  countdown_since_inside_person:
-    duration: "00:05:00"
-
 automation:
   - alias: flag when person is inside house
     trigger:

@@ -1,0 +1,23 @@
+- platform: mqtt
+  name: "Master Bedroom Fan"
+  qos: 1
+  state_topic: "stat/tl_fanlight_sw1_DC747A/POWER1"
+  command_topic: "cmnd/tl_fanlight_sw1_DC747A/POWER1"
+  availability_topic: "tele/tl_fanlight_sw1_DC747A/LWT"
+  percentage_state_topic: "stat/tl_fanlight_sw1_DC747A/speed"
+  percentage_value_template: '{{ ((value | replace("3,","")) | int + 1) * 25 }}'
+  percentage_command_topic: "cmnd/tl_fanlight_sw1_DC747A/tuyasend4"
+  percentage_command_template: "3,{{ ((value | int - 1) / 25) | int }}"
+  preset_mode_state_topic: "stat/tl_fanlight_sw1_DC747A/speed"
+  preset_mode_value_template: '{{ value | replace("3,0", "turtle") | replace("3,1", "low") | replace("3,2", "medium") | replace("3,3", "high") }}'
+  preset_mode_command_topic: "cmnd/tl_fanlight_sw1_DC747A/tuyasend4"
+  preset_mode_command_template: '{{ value | replace("turtle", "3,0") | replace("low", "3,1") | replace("medium", "3,2") | replace("high", "3,3") }}'
+  preset_modes:
+    - "turtle"
+    - "low"
+    - "medium"
+    - "high"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  payload_on: "ON"
+  payload_off: "OFF"

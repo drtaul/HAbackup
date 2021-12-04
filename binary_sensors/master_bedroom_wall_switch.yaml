@@ -1,0 +1,9 @@
+platform: mqtt
+name: "Master Bedroom Wall Switch"
+state_topic: "tele/tl_fanlight_sw1_DC747A/SENSOR"
+value_template: "{{ value_json.Switch1 }}"
+availability_topic: "tele/tl_fanlight_sw1_DC747A/LWT"
+payload_on: "ON"
+payload_off: "OFF"
+payload_available: "Online"
+payload_not_available: "Offline"

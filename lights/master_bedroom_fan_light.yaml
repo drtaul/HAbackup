@@ -1,0 +1,13 @@
+platform: mqtt
+name: "Master Bedroom Fan Light"
+state_topic: "stat/tl_fanlight_sw1_DC747A/POWER2"
+command_topic: "cmnd/tl_fanlight_sw1_DC747A/POWER2"
+availability_topic: "tele/tl_fanlight_sw1_DC747A/LWT"
+brightness_state_topic: "tele/tl_fanlight_sw1_DC747A/STATE"
+brightness_command_topic: "cmnd/tl_fanlight_sw1_DC747A/Dimmer"
+brightness_scale: 100
+brightness_value_template: "{{ value_json.Dimmer }}"
+payload_on: "ON"
+payload_off: "OFF"
+payload_available: "Online"
+payload_not_available: "Offline"

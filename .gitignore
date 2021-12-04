@@ -21,6 +21,12 @@
 !packages/
 !scripts/
 !switches/
+!lights/
+!binary_sensors/
+!fans/
+!automations/
+!automations/master_bedroom/
+!automations/upstairs_bedroom/
 # allow these subdirectories to be included
 !python_scripts/
 #!custom_components/

@@ -1,0 +1,9 @@
+platform: mqtt
+name: "Upstairs Bedroom Wall Switch"
+state_topic: "tele/fan-light-dim1_972020/SENSOR"
+value_template: "{{ value_json.Switch1 }}"
+availability_topic: "tele/fan-light-dim1_972020/LWT"
+payload_on: "ON"
+payload_off: "OFF"
+payload_available: "Online"
+payload_not_available: "Offline"

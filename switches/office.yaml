@@ -1,0 +1,26 @@
+- platform: mqtt
+  name: "Office Light"
+  state_topic: "stat/shelly-office-light/RESULT"
+  value_template: "{{ value_json.POWER }}"
+  command_topic: "cmnd/shelly-office-light/POWER"
+  availability_topic: "tele/shelly-office-light/LWT"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  icon: mdi:lamp
+- platform: mqtt
+  name: "Office Desk Light"
+  state_topic: "stat/office-desk-light/RESULT"
+  value_template: "{{ value_json.POWER }}"
+  command_topic: "cmnd/office-desk-light/POWER"
+  availability_topic: "tele/office-desk-light/LWT"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  retain: false
+  icon: mdi:desk-lamp
+

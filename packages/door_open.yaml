@@ -1,10 +1,4 @@
 
-timer:
-  dooropen:
-    duration: "00:10:00"
-  coversopen:
-    duration: "00:10:00"
-
 automation:
   - alias: start door open timer
     trigger:
@@ -35,9 +29,35 @@ automation:
         to: 'off'
     action:
       - service: script.update_doorsopen_list
-      - service: timer.cancel
-        target:
-          entity_id: timer.dooropen
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: binary_sensor.attic_monitor_door
+                state: 'off'
+              - condition: state
+                entity_id: binary_sensor.crawlspace_door
+                state: 'off'
+              - condition: state
+                entity_id: binary_sensor.garage_kitchen_door
+                state: 'off'
+              - condition: state
+                entity_id: binary_sensor.upstairs_door
+                state: 'off'
+              - condition: state
+                entity_id: binary_sensor.front_door
+                state: 'off'
+            sequence:
+              - service: timer.cancel
+                target:
+                  entity_id: timer.dooropen
+        default:
+          - service: timer.start
+            target:
+              entity_id: timer.dooropen
+            data:
+              duration: "00:05:00"
+
+        
   - alias: handle door open timer
     trigger:
       - platform: event
@@ -95,6 +115,9 @@ automation:
           - conditions:
               - condition: trigger
                 id: timer_finished
+              - condition: state
+                entity_id: input_boolean.person_outside
+                state: 'off'
               - condition: template
                 # person outside motion more than 20 minutes ago
                 value_template: >-

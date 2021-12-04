@@ -1,17 +1,3 @@
-input_boolean:
-  # managed by person component in home assistant
-  # reference automation.yaml 
-  dennishome:
-    name: Dennis Home
-    icon: mdi:human-male
-  kayhome:
-    name: Kay Home
-    icon: mdi:human-female
-  home_occupied:
-    name: Home Occupied
-    icon: mdi:human-male-female
-  individual_departed:
-    name: home occupant arriving or leaving
 
 sensor:
   - platform: template

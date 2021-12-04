@@ -1,3 +1,4 @@
+# shelly dimmer behind wall switch in the living room area
 - platform: mqtt
   name: "kitchen ceiling lights"
   state_topic: "stat/kitchen-ceiling-lights/POWER1"
@@ -8,3 +9,14 @@
   payload_off: "OFF"
   payload_available: "Online"
   payload_not_available: "Offline"
+# shelly 1 behind wall switch in the master bedroom
+# controls the ceiling lights
+- platform: mqtt
+  name: Master Bedroom Ceiling Lights
+  state_topic: "shellies/shelly-mstrbedrm/relay/0"
+  command_topic: "shellies/shelly-mstrbedrm/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  icon: mdi:lamp
+  qos: 1
+  retain: false
