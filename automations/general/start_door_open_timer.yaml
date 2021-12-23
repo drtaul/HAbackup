@@ -1,0 +1,17 @@
+alias: start door open timer
+trigger:
+  - platform: state
+    entity_id:
+      - binary_sensor.attic_monitor_door
+      - binary_sensor.crawlspace_door
+      - binary_sensor.garage_kitchen_door
+      - binary_sensor.upstairs_door
+      - binary_sensor.front_door
+    to: 'on'
+action:
+  - service: script.update_doorsopen_list
+  - service: timer.start
+    target:
+      entity_id: timer.dooropen
+    data:
+      duration: "00:08:00"

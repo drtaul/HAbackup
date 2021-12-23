@@ -1,0 +1,13 @@
+alias: start covers open timer
+mode: restart 
+trigger:
+  - platform: state
+    entity_id: group.outdoor_covers
+    id: cover_open_event
+    to: 'open'
+action:
+  - service: timer.start
+    target:
+      entity_id: timer.coversopen
+    data:
+      duration: "00:15:00"

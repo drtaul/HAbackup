@@ -1,0 +1,16 @@
+alias: handle door open timer
+trigger:
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.dooropen
+action:
+  - service: timer.start
+    target:
+      entity_id: timer.dooropen
+    data:
+      duration: "00:05:00"
+  - service: script.announce_echo_chk_outside
+    data_template:
+      message: The {{states('input_text.dooropen_list')}} has been left open
+

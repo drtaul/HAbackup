@@ -1,0 +1,47 @@
+alias: handle covers open timer
+mode: restart 
+trigger:
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.coversopen
+    id: timer_finished
+  - platform: state
+    entity_id: group.outdoor_covers
+    id: cover_close_event
+    to: 'closed'
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: timer_finished
+          - condition: state
+            entity_id: input_boolean.person_outside
+            state: 'on'
+        sequence:
+          - service: timer.start
+            target:
+              entity_id: timer.coversopen
+      - conditions:
+          - condition: trigger
+            id: timer_finished
+          - condition: state
+            entity_id: input_boolean.person_outside
+            state: 'off'
+          - condition: template
+            # person outside motion more than 20 minutes ago
+            value_template: >-
+              {{ (as_timestamp(now())-as_timestamp(states.input_boolean.person_outside.last_updated)) > 20*60 }}
+        sequence:
+          - service: script.close_covers_wannounce
+      - conditions:
+          - condition: trigger
+            id: cover_close_event
+        sequence:
+          - service: timer.cancel
+            target:
+              entity_id: timer.coversopen
+    default:
+      - service: timer.start
+        target:
+          entity_id: timer.coversopen
