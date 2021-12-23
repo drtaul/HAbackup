@@ -5,6 +5,6 @@ sequence:
         {% set covers = states | selectattr('entity_id', 'in', state_attr('group.outdoor_covers','entity_id'))| selectattr('state','eq','open')| map(attribute='name') | list %}
         {%- for entity_id in covers -%}
           {% if loop.first %} Closing the {% elif loop.last %} and the {% endif %}
-           {{ entity_id }}
+            {{ entity_id }}
         {%- endfor -%}.
   - service: script.close_covers
