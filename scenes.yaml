@@ -1,0 +1,45 @@
+- name: floodlights
+  entities:
+    switch.sidewalk_light: "on"
+    switch.shop_flood_light: "on"
+    switch.pavilion_floodlight: "on"
+    switch.garage_entrance_light: "on"
+- name: dark outdoors
+  entities:
+    switch.sidewalk_light: "off"
+    switch.shop_flood_light: "off"
+    switch.pavilion_floodlight: "off"
+    switch.garage_entrance_light: "off"
+- name: close covers
+  entities:
+    cover.gdoor: "closed"
+    cover.shop_door: "closed"
+- name: security camera alerts
+  entities:
+    switch.backyard_detect: "on"
+    switch.sideyard_detect: "on"
+    switch.sidewalk_detect: "on"
+    switch.garage_detect: "on"
+    switch.driveway_detect: "on"
+    input_boolean.security_camera_voice_alert: "on"
+- name: nobody home security
+  entities:
+    switch.backyard_detect: "on"
+    switch.sideyard_detect: "on"
+    switch.sidewalk_detect: "on"
+    switch.garage_detect: "on"
+    switch.driveway_detect: "on"
+    input_boolean.security_camera_notify: "on"
+    input_boolean.security_camera_voice_alert: "off"
+    input_boolean.person_inside: "off"
+    input_boolean.person_outside: "off"
+    input_boolean.exdoor_closed_since: "off"
+    input_boolean.all_occupants_inside: "off"
+- name: kitchen startup
+  entities:
+    switch.living_room_lamps: "on"
+    switch.kitchen_ceiling_lights: "on"
+    light.kitchen_counter_lights: "on"
+- name: living area wakeup
+  entities:
+    switch.living_room_lamps: "on"

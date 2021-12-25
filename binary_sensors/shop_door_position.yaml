@@ -1,0 +1,10 @@
+platform: mqtt
+name: "Shop Door State"
+state_topic: "stat/shelly-shop-door/status"
+payload_on: "open"
+payload_off: "closed"
+availability_topic: "tele/shelly-shop-door/LWT"
+payload_available: "Online"
+payload_not_available: "Offline"
+qos: 1
+device_class: opening

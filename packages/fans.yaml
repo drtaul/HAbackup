@@ -1,3 +1,10 @@
+# this setup was done to control the sonoff fan controller
+# once I started moving to the treatlife fan controllers I realized
+# I don't need this input_select when the fan is defined correctly
+# In the case of the treatlife controllers, I use tasmota and MQTT
+# and thus I can bring up the fan object and select the fan speed
+# Also, the alexa smart home interface is able to determine how to
+# control the fan.
 input_select:
   bonus_rm_fan:
     name: bonus rm fan speeds
