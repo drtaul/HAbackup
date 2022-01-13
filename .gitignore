@@ -29,6 +29,7 @@
 !automations/upstairs_bedroom/
 !automations/general/
 !automations/garage/
+!automations/weather/
 
 # allow these subdirectories to be included
 !python_scripts/

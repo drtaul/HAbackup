@@ -1,19 +1,18 @@
-switch:
-  - platform: mqtt
-    name: "Shop Ceiling Light"
-    state_topic: "shellies/shoplights/relay/0"
-    command_topic: "shellies/shoplights/relay/0/command"
-    payload_on: "on"
-    payload_off: "off"
-    qos: 1
-    retain: false
-    icon: mdi:lamp
-  - platform: mqtt
-    name: "Shop Flood Light"
-    state_topic: "shellies/shoplights/relay/1"
-    command_topic: "shellies/shoplights/relay/1/command"
-    payload_on: "on"
-    payload_off: "off"
-    qos: 1
-    retain: false
-    icon: mdi:spotlight-beam
+- platform: mqtt
+  name: "Shop Ceiling Light"
+  state_topic: "shellies/shoplights/relay/0"
+  command_topic: "shellies/shoplights/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  qos: 1
+  retain: false
+  icon: mdi:lamp
+- platform: mqtt
+  name: "Shop Flood Light"
+  state_topic: "shellies/shoplights/relay/1"
+  command_topic: "shellies/shoplights/relay/1/command"
+  payload_on: "on"
+  payload_off: "off"
+  qos: 1
+  retain: false
+  icon: mdi:spotlight-beam
